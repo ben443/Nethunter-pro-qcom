@@ -17,6 +17,6 @@ systemctl enable calamaresfb.service
 systemctl disable eg25-manager.service
 
 # Rename user so installer can change it's password
-if [ -f /etc/calamares/modules/mobile.conf ] && [ "$USERNAME" != "mobian" ]; then
-    sed -i "s/username: \"mobian\"/username: \"$USERNAME\"/" /etc/calamares/modules/mobile.conf
+if [ -f /etc/calamares/modules/mobile.conf ] && [ "$USERNAME" != "kali" ]; then
+    sed -i "s/username: \"kali\"/username: \"$USERNAME\"/" /etc/calamares/modules/mobile.conf
 fi

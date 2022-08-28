@@ -4,7 +4,10 @@
 echo $1 > /etc/hostname
 
 # Change plymouth default theme
-plymouth-set-default-theme mobian
+plymouth-set-default-theme kali
+
+# Enable essential services
+systemctl enable bluetooth.service
 
 # Load phosh on startup if package is installed
 if [ -f /usr/bin/phosh ]; then

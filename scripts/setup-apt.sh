@@ -10,8 +10,8 @@ COMPONENTS="main"
 [ "$NONFREE" = "true" ] && COMPONENTS="$COMPONENTS non-free"
 
 # Add debian-security for bullseye; note that only the main component is supported
-if [ "$DEBIAN_SUITE" = "bullseye" ]; then
-    echo "deb http://security.debian.org/ $DEBIAN_SUITE-security $COMPONENTS" >> /etc/apt/sources.list
+if [ "$DEBIAN_SUITE" = "kali-rolling" ]; then
+    echo "#deb-src http://http.kali.org/kali kali-rolling $COMPONENTS" >> /etc/apt/sources.list
 fi
 
 # Set the proper suite in our sources.list

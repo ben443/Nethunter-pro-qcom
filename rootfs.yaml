@@ -1,13 +1,13 @@
 {{- $architecture := or .architecture "arm64" -}}
-{{- $username := or .username "mobian" -}}
+{{- $username := or .username "kali" -}}
 {{- $password := or .password "1234" -}}
-{{- $hostname := or .hostname "mobian" -}}
+{{- $hostname := or .hostname "kali" -}}
 {{- $environment := or .environment "phosh" -}}
 {{- $contrib := or .contrib "false" -}}
 {{- $nonfree := or .nonfree "false" -}}
 {{- $ssh := or .ssh "" -}}
 {{- $zram:= or .zram "false" -}}
-{{- $debian_suite := or .debian_suite "bookworm" -}}
+{{- $debian_suite := or .debian_suite "kali-rolling" -}}
 {{- $suite := or .suite $debian_suite -}}
 {{- $rootfs := or .rootfs "rootfs.tar.gz" }}
 
@@ -24,8 +24,11 @@ actions:
 {{ if eq $nonfree "true" }}
       - non-free
 {{ end }}
-    mirror: http://deb.debian.org/debian
+    mirror: http://http.kali.org/kali
     variant: minbase
+    keyring-file: /usr/share/keyrings/kali-archive-keyring.gpg
+    keyring-package: kali-archive-keyring
+    ## check-gpg: false
 
   - action: overlay
     description: Enable Mobian repository
