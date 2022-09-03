@@ -11,7 +11,7 @@ actions:
       # Additional software we don't want metapackages to depend on
       - eog
       - epiphany-browser
-      - evince
+      # - evince
       - firefox-esr
       - gnome-calculator
       - gnome-calendar
@@ -26,7 +26,7 @@ actions:
       - gnome-weather
       - lollypop
       - portfolio-filemanager
-      - webext-ublock-origin
+      - webext-ublock-origin-firefox
 
   - action: run
     description: Disable getty in the Phosh environment
