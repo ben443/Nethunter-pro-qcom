@@ -1,39 +1,27 @@
-# mobian-recipes
+# NetHunter Pro recipes
 
 A set of [debos](https://github.com/go-debos/debos) recipes for building a
-debian-based image for mobile phones, initially targetting Pine64's PinePhone.
+Kali Linux based image for mobile phones, initially targetting Pine64's PinePhone.
 
-Prebuilt images are available [here](http://images.mobian.org/).
+Prebuilt images are available [here](https://www.kali.org/get-kali/#kali-mobile).
 
-The default user is `mobian` with password `1234`.
+The default user is `kali` with password `1234`.
 
 ## Build
 
-To build the image, you need to have `debos` and `bmaptool`. On a debian-based
+To build the image, you need to have `debos` and `bmaptool`. On a Kali Linux
 system, install these dependencies by typing the following command in a terminal:
 
 ```
 sudo apt install debos bmap-tools f2fs-tools
 ```
 
-Do note that the debos provided in Debian 10 (Buster) is not new enough
-(it will error out with "Unknown action: recipe"), the one in Debian
-Bullseye works.
 If you want to build with EXT4 filesystem f2fs-tools is not required.
 
 The build system will cache and re-use it's output files. To create a fresh build
 remove `*.tar.gz`, `*.sqfs` and `*.img` before starting the build.
 
-If your system isn't debian-based (or if you choose to install `debos` without
-using `apt`, which is a terrible idea), please make sure you also install the
-following required packages:
-- `debootstrap`
-- `qemu-system-x86`
-- `qemu-user-static`
-- `binfmt-support`
-- `squashfs-tools-ng` (only required for generating installer images)
-
-Then simply browse to the `mobian-recipes` folder and execute `./build.sh`.
+Then simply browse to the `kali-nethunter-pro` folder and execute `./build.sh`.
 
 You can use `./build.sh -d` to use the docker version of `debos`.
 
@@ -64,12 +52,6 @@ qemu-img resize -f qcow2 <qcow_image.qcow2> +20G
 Insert a MicroSD card into your computer, and type the following command:
 
 ```
-sudo bmaptool copy <image> /dev/<sdcard>
-```
-
-or:
-
-```
 sudo dd if=<image> of=/dev/<sdcard> bs=1M
 ```
 
@@ -78,21 +60,15 @@ sudo dd if=<image> of=/dev/<sdcard> bs=1M
 
 **CAUTION: This will format the SD card and erase all its contents!!!**
 
-## Third-party software
+Note: When booting NetHunter Pro from sdcard (as opposed to installing from sdcard),
+      remember to resize your sd-card first or you'll run out of space very quickly:
 
-The project's Wiki provides
-[a list](https://gitlab.com/mobian1/wiki/-/wikis/Software) of software
-packages modified or created to work on mobile devices.
-
-## Contributing
-
-If you want to help with this project, please have a look at the
-[roadmap](https://gitlab.com/mobian1/wiki/-/wikis/Development-Roadmap) and
-[open issues](https://gitlab.com/mobian1/issues).
-
-In case you need more information, feel free to get in touch with the developers
-on the Pine64 [forum](https://forum.pine64.org/showthread.php?tid=9016) and/or
-[#mobian:matrix.org](https://matrix.to/#/#mobian:matrix.org).
+```
+sudo parted /dev/<sdcard>
+(parted) resizepart 2 100%
+(parted) quit
+sudo resize2fs /dev/<sdcard><partition>
+```
 
 # License
 
