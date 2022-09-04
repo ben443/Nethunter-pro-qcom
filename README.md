@@ -1,3 +1,9 @@
+# Kali NetHunter - Mobile Penetration Testing Platform
+
+[Kali NetHunter](](https://www.kali.org/get-kali/#kali-mobile)) is a Mobile Penetration Testing Platform.
+
+[![Kali NetHunter Logo](./images/nethunter-git-logo.png)](./pictures/nethunter-git-logo.png)
+
 # NetHunter Pro recipes
 
 A set of [debos](https://github.com/go-debos/debos) recipes for building a
