@@ -37,7 +37,8 @@ variables:
   MOBIAN_IMAGE_SIZE: "6GB"
   MOBIAN_INCLUDE_NONFREE: "false"
   MOBIAN_MINIRAMFS: "false"
-  MOBIAN_PARTITION_TABLE: "mbr"
+  MOBIAN_PARTITION_TABLE: "gpt"
+  MOBIAN_HAS_ESP_PARTITION: "false"
   ARTIFACTS_ROOT: /srv/builder/images
   DEVICEFS_UPLOAD: "false"
   IMAGES_ROOT: /var/www/images
@@ -47,8 +48,8 @@ variables:
   variables:
     ARCH: amd64
     MOBIAN_DEVICE_FAMILY: "amd64"
+    MOBIAN_HAS_ESP_PARTITION: "true"
     MOBIAN_IMAGE_SIZE: "15GB"
-    MOBIAN_PARTITION_TABLE: "gpt"
 
 .arch-arm64:
   variables:
