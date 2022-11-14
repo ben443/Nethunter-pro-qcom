@@ -8,7 +8,7 @@ fi
 
 device="pinephonepro"
 image="image"
-partitiontable="mbr"
+partitiontable="gpt"
 filesystem="ext4"
 environment="phosh"
 hostname=
@@ -30,6 +30,7 @@ contrib="true"
 sign=
 miniramfs=
 verbose=
+esp="false"
 
 while getopts "dDvizobsZCrx:S:e:H:f:g:h:m:p:t:u:F:" opt
 do
@@ -88,18 +89,18 @@ case "$device" in
     arch="arm64"
     family="sdm845"
     suite="staging"
-    ARGS="$ARGS -t nonfree:true -t imagesize:5GB"
+    ARGS="$ARGS -t nonfree:true"
     ;;
   "amd64" )
     arch="amd64"
     family="amd64"
-    partitiontable="gpt"
+    esp="true"
     ARGS="$ARGS -t imagesize:15GB"
     ;;
   "amd64-nonfree" )
     arch="amd64"
     family="amd64"
-    partitiontable="gpt"
+    esp="true"
     ARGS="$ARGS -t nonfree:true -t imagesize:15GB"
     ;;
   * )
@@ -151,7 +152,8 @@ fi
 ARGS="$ARGS -t architecture:$arch -t family:$family -t device:$device \
             -t partitiontable:$partitiontable -t filesystem:$filesystem \
             -t image:$image_file -t rootfs:$rootfs_file -t installfs:$installfs_file \
-            -t debian_suite:$debian_suite -t suite:$suite --scratchsize=8G"
+            -t debian_suite:$debian_suite -t suite:$suite -t has_esp_partition:$esp \
+            --scratchsize=8G"
 
 if [ ! "$image_only" -o ! -f "$rootfs_file" ]; then
   $DEBOS_CMD $ARGS rootfs.yaml || exit 1

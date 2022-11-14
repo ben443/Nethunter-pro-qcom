@@ -66,6 +66,7 @@ sudo dd if=<image> of=/dev/<sdcard> bs=1M
 
 **CAUTION: This will format the SD card and erase all its contents!!!**
 
+<<<<<<< HEAD
 Note: When booting NetHunter Pro from sdcard (as opposed to installing from sdcard),
       remember to resize your sd-card first or you'll run out of space very quickly:
 
