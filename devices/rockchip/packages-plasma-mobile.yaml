@@ -1,0 +1,21 @@
+{{- $architecture := or .architecture "arm64" -}}
+{{- $device := or .device "pinephonepro" }}
+
+architecture: {{ $architecture }}
+
+actions:
+  - action: apt
+    ## We install phosh as a backup environment
+    recommends: false
+    description: Install device-specific packages for Phosh
+    packages:
+      - mobian-phosh-phone
+      - firefox-esr-mobile-config
+      - powersupply
+
+  - action: apt
+    recommends: false
+    description: Install device-specific packages for Plasma Mobile
+    packages:
+      - plasma-phone-components
+      - plasma-phone-settings

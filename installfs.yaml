@@ -17,7 +17,7 @@ actions:
     variant: minbase
 
   - action: overlay
-    description: Enable Mobian repository
+    description: Enable Mobian and Plasma Mobile repositories
     source: overlays/apt/
     destination: /etc/apt/
 

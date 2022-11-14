@@ -6,7 +6,7 @@ if [ -z ${ARGS+x} ]; then
     ARGS=""
 fi
 
-device="pinephone"
+device="pinephonepro"
 image="image"
 partitiontable="mbr"
 filesystem="ext4"
