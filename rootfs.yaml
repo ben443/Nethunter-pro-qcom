@@ -31,14 +31,31 @@ actions:
     ## check-gpg: false
 
   - action: overlay
-    description: Enable Mobian and Plasma Mobile repositories
+    description: Enable Mobian repository
     source: overlays/apt/
     destination: /etc/apt/
+
+{{ if eq $environment "plasma-mobile" }}
+  - action: overlay
+    description: Enable Plasma Mobile repository
+    source: overlays/plasma-mobile/apt/
+    destination: /etc/apt/
+{{ end }}
 
   - action: overlay
     description: Enable resize of root partition
     source: overlays/repart.d/
     destination: /etc/repart.d/
+
+  - action: overlay
+    description: Disable Kali motd during boot
+    source: overlays/kali-motd/
+    destination: /etc/kali-motd/
+
+  - action: overlay
+    description: Add improved Squeekboard terminal layout
+    source: overlays/skel/
+    destination: /etc/skel/
 
   - action: run
     description: Setup Mobian repository

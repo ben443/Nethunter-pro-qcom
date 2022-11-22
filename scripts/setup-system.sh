@@ -6,9 +6,14 @@ echo $1 > /etc/hostname
 # Change plymouth default theme
 plymouth-set-default-theme kali
 
+# Enable phog greeter if package is installed
+if [ -f /usr/bin/phog ]; then
+    systemctl enable greetd.service
+fi
+
 # Enable essential services
 systemctl enable bluetooth.service
-systemctl enable ssh
+systemctl enable ssh.service
 
 # systemd-firstboot requires user input, which isn't possible
 # on mobile devices

@@ -17,9 +17,16 @@ actions:
     variant: minbase
 
   - action: overlay
-    description: Enable Mobian and Plasma Mobile repositories
+    description: Enable Mobian repository
     source: overlays/apt/
     destination: /etc/apt/
+
+{{ if eq $environment "plasma-mobile" }}
+  - action: overlay
+    description: Enable Plasma Mobile repository
+    source: overlays/plasma-mobile/apt/
+    destination: /etc/apt/
+{{ end }}
 
   - action: run
     description: Setup Mobian repository

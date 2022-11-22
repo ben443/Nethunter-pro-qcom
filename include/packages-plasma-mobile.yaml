@@ -4,7 +4,6 @@ architecture: {{ $architecture }}
 
 actions:
   - action: apt
-    ## We install phosh as backup environment
     recommends: false
     description: Install Phosh packages
     packages:
@@ -13,7 +12,8 @@ actions:
       # Additional software we don't want metapackages to depend on
       - eog
       - epiphany-browser
-      # - evince
+      - endeavour
+      - evince
       - firefox-esr
       - gnome-calculator
       - gnome-calendar
@@ -23,12 +23,18 @@ actions:
       - gnome-software-plugin-flatpak
       - gnome-sound-recorder
       - gnome-text-editor
-      - gnome-todo
       - gnome-usage
       - gnome-weather
       - lollypop
+      - phog
+      - phosh-mobile-settings
+      - phosh-plugins
+      - phosh-tour
       - portfolio-filemanager
+      - powersupply-gtk
       - webext-ublock-origin-firefox
+      # Temporary workaround until chatty returns to bookworm
+      - chatty
 
   - action: run
     description: Disable getty in the Phosh environment
@@ -47,6 +53,6 @@ actions:
       - plasma-dialer
       - spacebar
 
-        ##  - action: run
-        ##description: Set default user to kali
-        ##command: sed -i "s/kali/phablet/" /lib/systemd/system/simplelogin.service
+  #- action: run
+    #description: Set default user to kali
+    #command: sed -i "s/kali/phablet/" /lib/systemd/system/simplelogin.service
