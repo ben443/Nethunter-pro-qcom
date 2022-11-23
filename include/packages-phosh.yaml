@@ -8,7 +8,6 @@ actions:
     description: Install Phosh packages
     packages:
       - mobian-phosh
-      - kali-themes
       # Additional software we don't want metapackages to depend on
       - eog
       - epiphany-browser
@@ -40,3 +39,9 @@ actions:
     description: Disable getty in the Phosh environment
     chroot: true
     command: systemctl disable getty@.service
+
+
+  - action: run
+    description: Set NetHunter wallpaper
+    chroot: true
+    command: sed -i "s/\/usr\/share\/backgrounds\/kali\/kali-layers-16x9.png/\/usr\/share\/backgrounds\/kali\/nethunter-pro-red-blue-1x1.png/" /usr/share/desktop-base/kali-theme/wallpaper/gnome-background.xml
