@@ -10,6 +10,7 @@ actions:
     packages:
       - {{ $device }}-support
       - rsync
+      - kali-hw-pinephonepro
 
   - action: run
     description: Enable eg25-manager service
@@ -20,6 +21,7 @@ actions:
     description: Update initramfs
     chroot: true
     command: echo "RESUME=none" > /etc/initramfs-tools/conf.d/resume; update-initramfs -u; rm -f /etc/initramfs-tools/conf.d/resume
+
   - action: run
     description: Update u-boot
     chroot: true
