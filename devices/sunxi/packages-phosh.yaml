@@ -8,9 +8,7 @@ actions:
     recommends: false
     description: Install device-specific packages for Phosh
     packages:
-{{ if eq $device "pinephone" }}
       - mobian-phosh-phone
       - firefox-esr-mobile-config
-{{ end }}
       - imagemagick
       - megapixels
