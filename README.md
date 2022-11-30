@@ -61,16 +61,6 @@ sudo dd if=<image> of=/dev/<sdcard> bs=1M
 
 **CAUTION: This will format the SD card and erase all its contents!!!**
 
-Note: When booting NetHunter Pro from sdcard (as opposed to installing from sdcard),
-      remember to resize your sd-card first or you'll run out of space very quickly:
-
-```console
-sudo parted /dev/<sdcard>
-(parted) resizepart 2 100%
-(parted) quit
-sudo resize2fs /dev/<sdcard><partition>
-```
-
 # License
 
 This software is licensed under the terms of the [GNU General Public License, version 3](https://www.kali.org/docs/policy/kali-linux-open-source-policy/).
