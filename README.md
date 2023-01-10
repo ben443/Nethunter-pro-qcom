@@ -59,6 +59,10 @@ sudo dd if=<image> of=/dev/<sdcard> bs=1M
 
 **CAUTION: This will format the SD card and erase all its contents!!!**
 
+### Install via Windows 
+
+You can use balena etcher to install the image downloaded onto the sd card. Start etcher and select the image file, target (which would be the sd card) and then "Flash". 
+
 # License
 
 This software is licensed under the terms of the [GNU General Public License, version 3](https://www.kali.org/docs/policy/kali-linux-open-source-policy/).
