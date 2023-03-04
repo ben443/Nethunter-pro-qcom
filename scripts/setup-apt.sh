@@ -7,7 +7,7 @@ NONFREE=$4
 
 COMPONENTS="main"
 [ "$CONTRIB" = "true" ] && COMPONENTS="$COMPONENTS contrib"
-[ "$NONFREE" = "true" ] && COMPONENTS="$COMPONENTS non-free"
+[ "$NONFREE" = "true" ] && COMPONENTS="$COMPONENTS non-free non-free-firmware"
 
 # Add debian-security for bullseye; note that only the main component is supported
 if [ "$DEBIAN_SUITE" = "kali-rolling" ]; then
