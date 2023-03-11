@@ -25,7 +25,7 @@ actions:
   - action: run
     description: Fix DTB in /boot
     chroot: true
-    command: dpkg-reconfigure `dpkg -l 'linux-image*' | awk '{if ($1 ~ "ii") print $2}'`
+    command: dpkg-reconfigure linux-image-`linux-version list | tail -1`
 
   - action: run
     description: Update u-boot
