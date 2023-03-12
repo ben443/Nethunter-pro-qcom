@@ -23,11 +23,6 @@ actions:
     command: echo "RESUME=none" > /etc/initramfs-tools/conf.d/resume; update-initramfs -u; rm -f /etc/initramfs-tools/conf.d/resume
 
   - action: run
-    description: Fix DTB in /boot
-    chroot: true
-    command: dpkg-reconfigure linux-image-`linux-version list | tail -1`
-
-  - action: run
     description: Update u-boot
     chroot: true
     command: u-boot-update 
