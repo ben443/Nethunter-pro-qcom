@@ -29,10 +29,11 @@ suite="bookworm"
 contrib="true"
 sign=
 miniramfs=
+release=
 verbose=
 esp="false"
 
-while getopts "dDvizobsZCrx:S:e:H:f:g:h:m:p:t:u:F:" opt
+while getopts "dDvizobsZCrx:S:e:H:f:g:h:m:p:t:u:F:R:" opt
 do
   case "$opt" in
     d ) use_docker=1 ;;
@@ -58,6 +59,7 @@ do
     S ) suite="$OPTARG" ;;
     C ) contrib=1 ;;
     r ) miniramfs=1 ;;
+    R ) release="$OPTARG" ;;
   esac
 done
 
@@ -111,11 +113,18 @@ esac
 
 installfs_file="installfs-$arch.tar.gz"
 
-image_file="nethunterpro-$device-$environment-`date +%Y%m%d`"
+image_file="nethunterpro"
+
+if [ -z "$release" ]; then
+  release=$( date +%Y%m%d )
+fi
+image_file="$image_file-$release"
+
 if [ "$installer" ]; then
   image="installer"
-  image_file="nethunterpro-installer-$device-$environment-`date +%Y%m%d`"
+  image_file="$image_file-$image"
 fi
+image_file="$image_file-$device-$environment"
 
 rootfs_file="rootfs-$arch-$environment.tar.gz"
 if echo $ARGS | grep -q "nonfree:true"; then
