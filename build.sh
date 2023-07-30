@@ -65,6 +65,7 @@ case "$device" in
   "pinephone" )
     arch="arm64"
     family="sunxi"
+    ARGS="$ARGS -t nonfree:true"
     ;;
   "pinephonepro" )
     arch="arm64"
