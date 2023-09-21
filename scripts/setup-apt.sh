@@ -17,9 +17,15 @@ fi
 # Set the proper suite in our sources.list
 sed -i "s/@@SUITE@@/${SUITE}/" /etc/apt/sources.list.d/mobian.list
 
-# Setup repo priorities so mobian comes first
-cat > /etc/apt/preferences.d/00-mobian-priority << EOF
+# Setup repo priorities so only u-boot-menu will be installed from mobian
+cat > /etc/apt/preferences.d/00-kali-priority << EOF
 Package: *
+Pin: release o=Kali
+Pin-Priority: 1000
+EOF
+
+cat > /etc/apt/preferences.d/10-mobian-priority << EOF
+Package: u-boot-menu*
 Pin: release o=Mobian
-Pin-Priority: 700
+Pin-Priority: 1001
 EOF

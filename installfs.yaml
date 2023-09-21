@@ -3,7 +3,7 @@
 {{- $password := or .password "1234" -}}
 {{- $hostname := or .hostname "mobian" -}}
 {{- $debian_suite := or .debian_suite "trixie" -}}
-{{- $suite := or .suite $debian_suite -}}
+{{- $suite := or .suite "trixie" -}}
 {{- $installfs := or .installfs "installfs.tar.gz" }}
 
 architecture: {{ $architecture }}
