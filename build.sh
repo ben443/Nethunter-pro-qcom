@@ -25,7 +25,7 @@ username=
 no_blockmap=
 ssh=
 debian_suite="kali-rolling"
-suite="bookworm"
+suite="trixie"
 contrib="true"
 sign=
 miniramfs=
@@ -65,6 +65,7 @@ case "$device" in
   "pinephone" )
     arch="arm64"
     family="sunxi"
+    ARGS="$ARGS -t nonfree:true"
     ;;
   "pinephonepro" )
     arch="arm64"

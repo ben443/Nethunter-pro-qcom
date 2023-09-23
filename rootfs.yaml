@@ -8,7 +8,7 @@
 {{- $ssh := or .ssh "" -}}
 {{- $zram:= or .zram "false" -}}
 {{- $debian_suite := or .debian_suite "kali-rolling" -}}
-{{- $suite := or .suite $debian_suite -}}
+{{- $suite := or .suite "trixie" -}}
 {{- $rootfs := or .rootfs "rootfs.tar.gz" }}
 
 architecture: {{ $architecture }}
@@ -23,7 +23,6 @@ actions:
 {{ end }}
 {{ if eq $nonfree "true" }}
       - non-free
-      - non-free-firmware
 {{ end }}
     mirror: http://http.kali.org/kali
     variant: minbase
