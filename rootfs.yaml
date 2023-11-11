@@ -7,7 +7,7 @@
 {{- $nonfree := or .nonfree "false" -}}
 {{- $ssh := or .ssh "" -}}
 {{- $zram:= or .zram "false" -}}
-{{- $debian_suite := or .debian_suite "bookworm" -}}
+{{- $debian_suite := or .debian_suite "trixie" -}}
 {{- $suite := or .suite $debian_suite -}}
 {{- $rootfs := or .rootfs "rootfs.tar.gz" }}
 
@@ -22,10 +22,15 @@ actions:
       - contrib
 {{ end }}
 {{ if eq $nonfree "true" }}
-      - non-free
+      - non-free-firmware
 {{ end }}
     mirror: http://deb.debian.org/debian
     variant: minbase
+
+  - action: run
+    description: Fix build on usr-merged systems
+    chroot: true
+    command: apt-get -y -f install
 
   - action: overlay
     description: Enable Mobian repository

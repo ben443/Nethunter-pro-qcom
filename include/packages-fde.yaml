@@ -7,7 +7,4 @@ actions:
     recommends: false
     description: Install packages for full disk encryption
     packages:
-      - cryptsetup
-      - cryptsetup-initramfs
-      - libblockdev-crypto2
-      - osk-sdl
+      - unl0kr
