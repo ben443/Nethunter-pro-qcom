@@ -30,6 +30,11 @@ actions:
     keyring-package: kali-archive-keyring
     ## check-gpg: false
 
+  - action: run
+    description: Fix build on usr-merged systems
+    chroot: true
+    command: apt-get -y -f install
+
   - action: overlay
     description: Enable Mobian repository
     source: overlays/apt/

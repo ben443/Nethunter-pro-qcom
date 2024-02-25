@@ -9,7 +9,7 @@ COMPONENTS="main"
 [ "$CONTRIB" = "true" ] && COMPONENTS="$COMPONENTS contrib"
 [ "$NONFREE" = "true" ] && COMPONENTS="$COMPONENTS non-free non-free-firmware"
 
-# Add debian-security for bullseye; note that only the main component is supported
+# Add source repo
 if [ "$DEBIAN_SUITE" = "kali-rolling" ]; then
     echo "#deb-src http://http.kali.org/kali kali-rolling $COMPONENTS" >> /etc/apt/sources.list
 fi

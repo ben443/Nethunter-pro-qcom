@@ -4,6 +4,7 @@
   variables:
     MOBIAN_DEVICE_FAMILY: "sunxi"
     MOBIAN_DEVICE_NAME: "pinephone"
+    MOBIAN_INCLUDE_NONFREE: "true"
     DEVICEFS_UPLOAD: "true"
 
 .device-pinephonepro:
@@ -13,7 +14,6 @@
     MOBIAN_DEVICE_FAMILY: "rockchip"
     MOBIAN_DEVICE_NAME: "pinephonepro"
     MOBIAN_INCLUDE_NONFREE: "true"
-    MOBIAN_SUITE: "staging"
 
 .device-pinetab:
   extends:
@@ -21,6 +21,14 @@
   variables:
     MOBIAN_DEVICE_FAMILY: "sunxi"
     MOBIAN_DEVICE_NAME: "pinetab"
+    MOBIAN_INCLUDE_NONFREE: "true"
+
+.device-pinetab2:
+  extends:
+    - .arch-arm64
+  variables:
+    MOBIAN_DEVICE_FAMILY: "rockchip"
+    MOBIAN_DEVICE_NAME: "pinetab2"
 
 .device-librem5:
   extends:
@@ -30,23 +38,25 @@
     MOBIAN_DEVICE_NAME: "librem5"
     MOBIAN_BOOT_PARTITION_START: "8MiB"
 
-.device-oneplus6:
+.device-qcom:
   extends:
     - .arch-arm64
   variables:
-    MOBIAN_DEVICE_FAMILY: "sdm845"
-    MOBIAN_DEVICE_NAME: "oneplus6"
-    MOBIAN_SUITE: "staging"
+    MOBIAN_DEVICE_FAMILY: "qcom"
     MOBIAN_INCLUDE_NONFREE: "true"
+    MOBIAN_EXTRA_DEBOS_ARGS: "-e MKE2FS_DEVICE_SECTSIZE:4096 -t bootonroot:true"
 
-.device-pocof1:
+.device-sdm845:
   extends:
-    - .arch-arm64
+    - .device-qcom
   variables:
-    MOBIAN_DEVICE_FAMILY: "sdm845"
-    MOBIAN_DEVICE_NAME: "pocof1"
-    MOBIAN_SUITE: "staging"
-    MOBIAN_INCLUDE_NONFREE: "true"
+    MOBIAN_DEVICE_NAME: "sdm845"
+
+.device-sm7225:
+  extends:
+    - .device-qcom
+  variables:
+    MOBIAN_DEVICE_NAME: "sm7225"
 
 .device-amd64:
   extends:
