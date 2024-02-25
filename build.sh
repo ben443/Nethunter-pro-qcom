@@ -31,6 +31,7 @@ suite="trixie"
 contrib="true"
 sign=
 miniramfs=
+release=
 verbose=
 
 while getopts "cdDvizobsZCrR:x:S:e:H:f:g:h:m:p:t:u:F:" opt
@@ -110,11 +111,18 @@ esac
 
 installfs_file="installfs-${arch}.tar.gz"
 
-image_file="nethunterpro-$device-$environment-`date +%Y%m%d`"
+image_file="nethunterpro"
+
+if [ -z "$release" ]; then
+  release=$( date +%Y%m%d )
+fi
+image_file="$image_file-$release"
+
 if [ "$installer" ]; then
   image="installer"
-  image_file="nethunterpro-installer-$device-$environment-`date +%Y%m%d`"
+  image_file="$image_file-$image"
 fi
+image_file="$image_file-$device-$environment"
 
 rootfs_file="rootfs-${arch}-${environment}.tar.gz"
 if echo "${ARGS}" | grep -q "nonfree:true"; then
