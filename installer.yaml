@@ -36,7 +36,7 @@ actions:
   - action: run
     description: Enable non-free Kali repo
     chroot: true
-    command: sed -i 's/main$/main non-free/g' /etc/apt/sources.list
+    command: sed -i 's/main$/main non-free-firmware/g' /etc/apt/sources.list
 {{ end }}
 
   - action: recipe
