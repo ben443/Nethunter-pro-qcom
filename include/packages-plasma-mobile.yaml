@@ -5,54 +5,16 @@ architecture: {{ $architecture }}
 actions:
   - action: apt
     recommends: false
-    description: Install Phosh packages
-    packages:
-      - mobian-phosh
-      - kali-themes
-      # Additional software we don't want metapackages to depend on
-      - eog
-      - epiphany-browser
-      - endeavour
-      - evince
-      - firefox-esr
-      - gnome-calculator
-      - gnome-calendar
-      - gnome-console
-      - gnome-maps
-      - gnome-software
-      - gnome-software-plugin-flatpak
-      - gnome-sound-recorder
-      - gnome-text-editor
-      - gnome-usage
-      - gnome-weather
-      - lollypop
-      - phog
-      - phosh-mobile-settings
-      - phosh-plugins
-      - phosh-tour
-      - portfolio-filemanager
-      - powersupply-gtk
-      - webext-ublock-origin-firefox
-      # Temporary workaround until chatty returns to bookworm
-      - chatty
-
-  - action: run
-    description: Disable getty in the Phosh environment
-    chroot: true
-    command: systemctl disable getty@.service
-
-  - action: apt
-    recommends: false
     description: Install Plasma Mobile packages
     packages:
-      - plasma-settings
-      - plasma-phonebook
-      - plasma-angelfish
-      - plasma-nm
-      - simplelogin
-      - plasma-dialer
-      - spacebar
-
-  #- action: run
-    #description: Set default user to kali
-    #command: sed -i "s/kali/phablet/" /lib/systemd/system/simplelogin.service
+      - mobian-plasma-mobile
+      - angelfish
+      - elisa
+      - firefox-esr
+      - kdeconnect
+      - ktrip
+      - neochat
+      - phog
+      - qmlkonsole
+      - tokodon
+      - webext-ublock-origin-firefox

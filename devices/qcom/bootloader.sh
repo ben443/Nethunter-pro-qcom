@@ -1,38 +1,13 @@
 #!/bin/sh
 
+SCRIPT="$0"
 DEVICE="$1"
 
-generate_bootimg() {
-    ROOTDEV="$1"
-    SOC="$2"
-    VENDOR="$3"
-    MODEL="$4"
-    VARIANT="$5"
-
-    CMDLINE="mobile.qcomsoc=${SOC} mobile.vendor=${VENDOR} mobile.model=${MODEL}"
-    if [ "${VARIANT}" ]; then
-        CMDLINE="${CMDLINE} mobile.variant=${VARIANT}"
-        FULLMODEL="${MODEL}-${VARIANT}"
-    else
-        FULLMODEL="${MODEL}"
-    fi
-
-    # Workaround a bug in the SDHCI driver on SM7225
-    if [ "${SOC}" = "qcom/sm7225" ]; then
-        CMDLINE="${CMDLINE} sdhci.debug_quirks=0x40"
-    fi
-
-    # Append DTB to kernel
-    echo "Creating boot image for ${FULLMODEL}..."
-    cat /boot/vmlinuz-${KERNEL_VERSION} \
-        /usr/lib/linux-image-${KERNEL_VERSION}/${SOC}-${VENDOR}-${FULLMODEL}.dtb > /tmp/kernel-dtb
-
-    # Create the bootimg as it's the only format recognized by the Android bootloader
-    abootimg --create /bootimg-${FULLMODEL} -c kerneladdr=0x8000 \
-        -c ramdiskaddr=0x1000000 -c secondaddr=0x0 -c tagsaddr=0x100 -c pagesize=4096 \
-        -c cmdline="mobile.root=${ROOTDEV} ${CMDLINE} init=/sbin/init ro quiet splash" \
-        -k /tmp/kernel-dtb -r /boot/initrd.img-${KERNEL_VERSION}
-}
+CONFIG="$(dirname ${SCRIPT})/configs/${DEVICE}.toml"
+if ! [ -f "${CONFIG}" ]; then
+    echo "ERROR: No configuration for device type '${DEVICE}'!"
+    exit 1
+fi
 
 ROOTPART="UUID=$(findmnt -n -o UUID /)"
 if [ "${ROOTPART}" = "UUID=" ]; then
@@ -41,20 +16,44 @@ if [ "${ROOTPART}" = "UUID=" ]; then
 fi
 KERNEL_VERSION=$(linux-version list)
 
-case "${DEVICE}" in
-    "sdm845")
-        generate_bootimg "${ROOTPART}" "qcom/sdm845" "oneplus" "enchilada"
-        generate_bootimg "${ROOTPART}" "qcom/sdm845" "oneplus" "fajita"
-        generate_bootimg "${ROOTPART}" "qcom/sdm845" "shift" "axolotl"
-        generate_bootimg "${ROOTPART}" "qcom/sdm845" "xiaomi" "beryllium" "tianma"
-        generate_bootimg "${ROOTPART}" "qcom/sdm845" "xiaomi" "beryllium" "ebbg"
-        generate_bootimg "${ROOTPART}" "qcom/sdm845" "xiaomi" "polaris"
-        ;;
-    "sm7225")
-        generate_bootimg "${ROOTPART}" "qcom/sm7225" "fairphone" "fp4"
-        ;;
-    *)
-        echo "ERROR: unsupported device ${DEVICE}"
-        exit 1
-        ;;
-esac
+# Parse config for generic parameters for the current SoC
+SOC=$(tomlq -r "if .chipset then .chipset else \"${DEVICE}\" end" ${CONFIG})
+KERNEL_ADDR="$(tomlq -r '.bootimg.kernel + .bootimg.base' ${CONFIG})"
+RAMDISK_ADDR="$(tomlq -r '.bootimg.ramdisk + .bootimg.base' ${CONFIG})"
+SECOND_ADDR="$(tomlq -r '.bootimg.second + .bootimg.base' ${CONFIG})"
+TAGS_ADDR="$(tomlq -r '.bootimg.tags + .bootimg.base' ${CONFIG})"
+PAGE_SIZE="$(tomlq -r '.bootimg.pagesize' ${CONFIG})"
+
+for i in $(seq 0 $(tomlq -r '.device | length - 1' ${CONFIG})); do
+    # Parse device-specific parameters
+    VENDOR=$(tomlq -r ".device[$i].vendor" ${CONFIG})
+    MODEL=$(tomlq -r ".device[$i].model" ${CONFIG})
+    VARIANT=$(tomlq -r "if .device[$i].variant then .device[$i].variant else \"\" end" ${CONFIG})
+    DEVICE_SOC=$(tomlq -r "if .device[$i].chipset then .device[$i].chipset else \"${SOC}\" end" ${CONFIG})
+    APPEND=$(tomlq -r "if .device[$i].append then .device[$i].append else \"\" end" ${CONFIG})
+
+    CMDLINE="mobile.qcomsoc=qcom/${DEVICE_SOC} mobile.vendor=${VENDOR} mobile.model=${MODEL}"
+    if [ "${VARIANT}" ]; then
+        CMDLINE="${CMDLINE} mobile.variant=${VARIANT}"
+        FULLMODEL="${MODEL}-${VARIANT}"
+    else
+        FULLMODEL="${MODEL}"
+    fi
+    DTB_FILE="/usr/lib/linux-image-${KERNEL_VERSION}/qcom/${DEVICE_SOC}-${VENDOR}-${FULLMODEL}.dtb"
+
+    # Include additional cmdline args if specified
+    if [ "${APPEND}" ]; then
+        CMDLINE="${CMDLINE} ${APPEND}"
+    fi
+
+    # Append DTB to kernel
+    echo "Creating boot image for ${FULLMODEL}..."
+    cat /boot/vmlinuz-${KERNEL_VERSION} ${DTB_FILE} > /tmp/kernel-dtb
+
+    # Create the bootimg as it's the only format recognized by the Android bootloader
+    abootimg --create /bootimg-${FULLMODEL} \
+        -c kerneladdr=${KERNEL_ADDR} -c ramdiskaddr=${RAMDISK_ADDR} \
+        -c secondaddr=${SECOND_ADDR} -c tagsaddr=${TAGS_ADDR} -c pagesize=${PAGE_SIZE} \
+        -c cmdline="mobile.root=${ROOTPART} ${CMDLINE} init=/sbin/init ro quiet splash" \
+        -k /tmp/kernel-dtb -r /boot/initrd.img-${KERNEL_VERSION}
+done

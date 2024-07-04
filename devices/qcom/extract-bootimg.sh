@@ -1,22 +1,25 @@
 #!/bin/sh
 
+SCRIPT="$0"
 DEVICE="$1"
 IMAGE="$2"
 
 [ "$IMAGE" ] || exit 1
 
-case "${DEVICE}" in
-    "sdm845")
-        VARIANTS="axolotl beryllium-tianma beryllium-ebbg enchilada fajita polaris"
-        ;;
-    "sm7225")
-        VARIANTS="fp4"
-        ;;
-    *)
-        echo "ERROR: unsupported device ${DEVICE}"
-        exit 1
-        ;;
-esac
+CONFIG="$(dirname ${SCRIPT})/configs/${DEVICE}.toml"
+if ! [ -f "${CONFIG}" ]; then
+    echo "ERROR: No configuration for device type '${DEVICE}'!"
+    exit 1
+fi
+
+# Extract all supported variants from config
+VARIANTS="$(tomlq -r 'foreach .device[] as $dev (0;
+    if $dev.variant then
+        [$dev.model, $dev.variant] | join("-")
+    else
+        $dev.model
+    end
+)' ${CONFIG})"
 
 for variant in ${VARIANTS}; do
     echo "Extracting boot image for variant ${variant}"

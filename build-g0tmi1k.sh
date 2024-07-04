@@ -19,6 +19,7 @@ image_only=
 installer=
 zram=
 memory=
+mirror=
 password=
 use_docker=
 username=
@@ -33,7 +34,7 @@ release=
 verbose=
 esp="false"
 
-while getopts "dDvizobsZCrx:S:e:H:f:g:h:m:p:t:u:F:R:" opt
+while getopts "dDvizobsZCrx:S:e:H:f:g:h:m:M:p:t:u:F:R:" opt
 do
   case "$opt" in
     d ) use_docker=1 ;;
@@ -50,6 +51,7 @@ do
     f ) ftp_proxy="$OPTARG" ;;
     h ) http_proxy="$OPTARG" ;;
     g ) sign="$OPTARG" ;;
+    M ) mirror="$OPTARG" ;;
     m ) memory="$OPTARG" ;;
     p ) password="$OPTARG" ;;
     t ) device="$OPTARG" ;;
@@ -64,11 +66,11 @@ do
 done
 
 case "$device" in
-  "pinephone" )
+  "pinephone"|"pinetab"|"sunxi" )
     arch="arm64"
     family="sunxi"
     ;;
-  "pinephonepro" )
+  "pinephonepro"|"pinetab2"|"rockchip" )
     arch="arm64"
     family="rockchip"
     suite="staging"
@@ -78,32 +80,25 @@ case "$device" in
         miniramfs=1
     fi
     ;;
-  "pinetab" )
-    arch="arm64"
-    family="sunxi"
-    ;;
   "librem5" )
     arch="arm64"
     family="librem5"
     ARGS="$ARGS -t bootstart:8MiB"
     ;;
-  "oneplus6"|"pocof1" )
+  "qcom"|"sdm845"|"sm7225"|"qcom-wip" )
+    if [ "${device}" = "qcom-wip" ]; then
+      device="wip"
+    fi
     arch="arm64"
     family="sdm845"
     suite="staging"
-    ARGS="$ARGS -t nonfree:true"
+    SECTSIZE="$(tomlq -r '.bootimg.pagesize' devices/qcom/configs/${device}.toml)"
+    ARGS="${ARGS} -e MKE2FS_DEVICE_SECTSIZE:${SECTSIZE} -t nonfree:true -t bootonroot:true"
     ;;
-  "amd64" )
+  "amd64"|"amd64-free" )
     arch="amd64"
     family="amd64"
-    esp="true"
-    ARGS="$ARGS -t imagesize:15GB"
-    ;;
-  "amd64-nonfree" )
-    arch="amd64"
-    family="amd64"
-    esp="true"
-    ARGS="$ARGS -t nonfree:true -t imagesize:15GB"
+    ARGS="${ARGS} -t imagesize:15GB -t installersize:10GB"
     ;;
   * )
     echo "Unsupported device '$device'"
@@ -154,6 +149,7 @@ fi
 [ "$http_proxy" ] && ARGS="$ARGS -e http_proxy:$http_proxy"
 [ "$ftp_proxy" ] && ARGS="$ARGS -e ftp_proxy:$ftp_proxy"
 [ "$memory" ] && ARGS="$ARGS --memory $memory"
+[ "$mirror" ] && ARGS="$ARGS -t mirror:$mirror"
 [ "$miniramfs" ] && ARGS="$ARGS -t miniramfs:true"
 [ "$contrib" ] && ARGS="$ARGS -t contrib:true"
 [ "$zram" ] && ARGS="$ARGS -t zram:true"

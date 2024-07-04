@@ -10,6 +10,7 @@
 {{- $debian_suite := or .debian_suite "kali-rolling" -}}
 {{- $suite := or .suite "trixie" -}}
 {{- $rootfs := or .rootfs "rootfs.tar.gz" }}
+{{- $mirror := or .mirror "http://http.kali.org/kali" -}}
 
 architecture: {{ $architecture }}
 
@@ -24,7 +25,7 @@ actions:
 {{ if eq $nonfree "true" }}
       - non-free-firmware
 {{ end }}
-    mirror: http://http.kali.org/kali
+    mirror: {{ $mirror }}
     variant: minbase
     keyring-file: /usr/share/keyrings/kali-archive-keyring.gpg
     keyring-package: kali-archive-keyring
