@@ -17,15 +17,30 @@ fi
 # Set the proper suite in our sources.list
 sed -i "s/@@SUITE@@/${SUITE}/" /etc/apt/sources.list.d/mobian.list
 
-# Setup repo priorities so only u-boot-menu will be installed from mobian
 cat > /etc/apt/preferences.d/00-kali-priority << EOF
 Package: *
 Pin: release o=Kali
-Pin-Priority: 1000
+Pin-Priority: 600
 EOF
 
 cat > /etc/apt/preferences.d/10-mobian-priority << EOF
 Package: u-boot-menu*
 Pin: release o=Mobian
-Pin-Priority: 1001
+Pin-Priority: 700
+
+Package: alsa-ucm-conf
+Pin: release o=Mobian
+Pin-Priority: 700
+
+Package: libqrtr1
+Pin: release o=Mobian
+Pin-Priority: 700
+
+Package: protection-domain-mapper
+Pin: release o=Mobian
+Pin-Priority: 700
+
+Package: qrtr-tools
+Pin: release o=Mobian
+Pin-Priority: 700
 EOF
