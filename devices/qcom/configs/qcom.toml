@@ -11,29 +11,34 @@ pagesize = 4096
 [[device]]
 vendor = "oneplus"
 model = "enchilada"
-append = "console=ttyMSM0,115200"
+append = ""
+# append = "console=ttyMSM0,115200"
 
 [[device]]
 vendor = "oneplus"
 model = "fajita"
-append = "console=ttyMSM0,115200"
+append = ""
+# append = "console=ttyMSM0,115200"
 
 [[device]]
 vendor = "shift"
 model = "axolotl"
-append = "console=ttyMSM0,115200"
+append = ""
+# append = "console=ttyMSM0,115200"
 
 [[device]]
 vendor = "xiaomi"
 model = "beryllium"
 variant = "ebbg"
-append = "console=ttyMSM0,115200"
+append = ""
+# append = "console=ttyMSM0,115200"
 
 [[device]]
 vendor = "xiaomi"
 model = "beryllium"
 variant = "tianma"
-append = "console=ttyMSM0,115200"
+append = ""
+# append = "console=ttyMSM0,115200"
 
 [[device]]
 vendor = "fairphone"
