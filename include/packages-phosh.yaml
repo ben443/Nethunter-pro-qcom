@@ -34,7 +34,6 @@ actions:
       - portfolio-filemanager
       - powersupply-gtk
       - webext-ublock-origin-firefox
-      # Temporary workaround until chatty returns to bookworm
       - chatty
 
   - action: run
