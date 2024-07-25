@@ -39,4 +39,4 @@ actions:
   - action: run
     description: Enable essential qcom services
     chroot: true
-    command: systemctl enable qrtr-ns.service rmtfs.service pd-mapper.service tqftpserv.service droid-juicer.service
+    command: systemctl enable qrtr-ns.service rmtfs.service pd-mapper.service tqftpserv.service droid-juicer.service qcom-modem-setup.service
