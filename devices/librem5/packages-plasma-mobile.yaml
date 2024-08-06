@@ -1,5 +1,5 @@
 {{- $architecture := or .architecture "arm64" -}}
-{{- $device := or .device "pinephonepro" }}
+{{- $device := or .device "librem5" }}
 
 architecture: {{ $architecture }}
 
@@ -8,7 +8,6 @@ actions:
     recommends: false
     description: Install device-specific packages for Plasma Mobile
     packages:
-{{ if ne $device "pinetab2" }}
       - mobian-plasma-mobile-phone
       - firefox-esr-mobile-config
-{{ end }}
+      - millipixels

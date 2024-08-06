@@ -8,8 +8,8 @@ actions:
     recommends: false
     description: Install device-specific packages for Phosh
     packages:
-{{ if eq $device "pinephonepro" }}
+{{ if ne $device "pinetab2" }}
       - mobian-phosh-phone
       - firefox-esr-mobile-config
 {{ end }}
-      - pinhole
+      - gnome-snapshot

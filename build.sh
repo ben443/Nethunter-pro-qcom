@@ -21,19 +21,20 @@ image_only=
 installer=
 zram=
 memory=
+mirror=
 password=
 use_docker=
 username=
 no_blockmap=
 ssh=
 debian_suite="kali-rolling"
-suite="trixie"
+suite="bookworm"
 contrib="true"
 sign=
 miniramfs=
 verbose=
 
-while getopts "cdDvizobsZCrR:x:S:e:H:f:g:h:m:p:t:u:F:" opt
+while getopts "cdDvizobsZCrR:x:S:e:H:f:g:h:m:M:p:t:u:F:" opt
 do
   case "${opt}" in
     c ) crypt_root=1 ;;
@@ -52,6 +53,7 @@ do
     f ) ftp_proxy="${OPTARG}" ;;
     h ) http_proxy="${OPTARG}" ;;
     g ) sign="${OPTARG}" ;;
+    M ) mirror="${OPTARG}" ;;
     m ) memory="${OPTARG}" ;;
     p ) password="${OPTARG}" ;;
     t ) device="${OPTARG}" ;;
@@ -69,38 +71,30 @@ do
 done
 
 case "${device}" in
-  "pinephone" )
+  "pinephone"|"pinetab"|"sunxi" )
     family="sunxi"
     ARGS="${ARGS} -t nonfree:true"
     ;;
-  "pinephonepro" )
+  "pinephonepro"|"pinetab2"|"rockchip" )
     family="rockchip"
     ARGS="${ARGS} -t nonfree:true"
-    ;;
-  "pinetab" )
-    family="sunxi"
-    ARGS="${ARGS} -t nonfree:true"
-    ;;
-  "pinetab2" )
-    family="rockchip"
     ;;
   "librem5" )
     family="librem5"
     ARGS="${ARGS} -t bootstart:8MiB"
     ;;
-  "sdm845"|"sm7225" )
+  "qcom"|"sdm845"|"sm7225"|"qcom-wip" )
+    if [ "${device}" = "qcom-wip" ]; then
+      device="wip"
+    fi
     family="qcom"
-    ARGS="${ARGS} -e MKE2FS_DEVICE_SECTSIZE:4096 -t nonfree:true -t bootonroot:true"
+    SECTSIZE="$(tomlq -r '.bootimg.pagesize' devices/qcom/configs/${device}.toml)"
+    ARGS="${ARGS} -e MKE2FS_DEVICE_SECTSIZE:${SECTSIZE} -t nonfree:true -t bootonroot:true"
     ;;
-  "amd64" )
+  "amd64"|"amd64-free" )
     arch="amd64"
     family="amd64"
     ARGS="${ARGS} -t imagesize:15GB -t installersize:10GB"
-    ;;
-  "amd64-nonfree" )
-    arch="amd64"
-    family="amd64"
-    ARGS="${ARGS} -t nonfree:true -t imagesize:15GB -t installersize:10GB"
     ;;
   * )
     echo "Unsupported device '${device}'"
@@ -146,6 +140,7 @@ fi
 [ "${http_proxy}" ] && ARGS="${ARGS} -e http_proxy:${http_proxy}"
 [ "${ftp_proxy}" ] && ARGS="${ARGS} -e ftp_proxy:${ftp_proxy}"
 [ "${memory}" ] && ARGS="${ARGS} --memory ${memory}"
+[ "${mirror}" ] && ARGS="${ARGS} -t mirror:${mirror}"
 [ "${miniramfs}" ] && ARGS="${ARGS} -t miniramfs:true"
 [ "${contrib}" ] && ARGS="${ARGS} -t contrib:true"
 [ "${zram}" ] && ARGS="${ARGS} -t zram:true"

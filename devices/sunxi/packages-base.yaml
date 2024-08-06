@@ -10,7 +10,6 @@ actions:
     packages:
       - {{ $device }}-support
       - rsync
-      - kali-hw-pinephone
 
   - action: run
     description: Enable eg25-manager service

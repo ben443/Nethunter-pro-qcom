@@ -9,24 +9,24 @@ actions:
     packages:
       - mobian-phosh
       # Additional software we don't want metapackages to depend on
-      - eog
-      - epiphany-browser
       - endeavour
+      - epiphany-browser
       - evince
       - firefox-esr
-      # Temporary hack until geary returns to testing
-      # - geary
+      - geary
       - gnome-calculator
       - gnome-calendar
       - gnome-console
       - gnome-maps
       - gnome-software
+      - gnome-software-plugin-deb
       - gnome-software-plugin-flatpak
       - gnome-sound-recorder
       - gnome-text-editor
       - gnome-usage
       - gnome-weather
       - lollypop
+      - loupe
       - phog
       - phosh-mobile-settings
       - phosh-plugins
