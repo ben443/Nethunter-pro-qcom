@@ -41,6 +41,12 @@ append = ""
 # append = "console=ttyMSM0,115200"
 
 [[device]]
+vendor = "xiaomi"
+model = "polaris"
+append = ""
+# append = "console=ttyMSM0,115200"
+
+[[device]]
 vendor = "fairphone"
 model = "fp4"
 chipset = "sm7225"
