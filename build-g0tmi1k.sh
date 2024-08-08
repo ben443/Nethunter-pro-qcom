@@ -90,7 +90,7 @@ case "$device" in
       device="wip"
     fi
     arch="arm64"
-    family="sdm845"
+    family="qcom"
     suite="staging"
     SECTSIZE="$(tomlq -r '.bootimg.pagesize' devices/qcom/configs/${device}.toml)"
     ARGS="${ARGS} -e MKE2FS_DEVICE_SECTSIZE:${SECTSIZE} -t nonfree:true -t bootonroot:true"
