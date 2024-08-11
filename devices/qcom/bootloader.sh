@@ -105,8 +105,8 @@ case "${DEVICE}" in
 		generate_bootimg -r "${ROOTPART}" -s "qcom/sdm845" -v "oneplus" -m "enchilada"
 		generate_bootimg -r "${ROOTPART}" -s "qcom/sdm845" -v "oneplus" -m "fajita"
 		generate_bootimg -r "${ROOTPART}" -s "qcom/sdm845" -v "shift" -m "axolotl"
-		generate_bootimg -r "${ROOTPART}" -s "qcom/sdm845" -v "xiaomi" -m "beryllium" "tianma"
-		generate_bootimg -r "${ROOTPART}" -s "qcom/sdm845" -v "xiaomi" -m "beryllium" "ebbg"
+		generate_bootimg -r "${ROOTPART}" -s "qcom/sdm845" -v "xiaomi" -m "beryllium" -w "tianma"
+		generate_bootimg -r "${ROOTPART}" -s "qcom/sdm845" -v "xiaomi" -m "beryllium" -w "ebbg"
 		generate_bootimg -r "${ROOTPART}" -s "qcom/sdm845" -v "xiaomi" -m "polaris"
 		;;
 	"sm7225")

@@ -37,3 +37,9 @@ model = "beryllium"
 variant = "tianma"
 append = ""
 # append = "console=ttyMSM0,115200"
+
+[[device]]
+vendor = "xiaomi"
+model = "polaris"
+append = ""
+# append = "console=ttyMSM0,115200"
