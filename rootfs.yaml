@@ -29,7 +29,7 @@ actions:
     variant: minbase
     keyring-file: /usr/share/keyrings/kali-archive-keyring.gpg
     keyring-package: kali-archive-keyring
-    ## check-gpg: false
+    #check-gpg: false
 
   - action: run
     description: Fix build on usr-merged systems
