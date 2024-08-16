@@ -1,3 +1,50 @@
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#
+## REF (Project): https://gitlab.com/kalilinux/nethunter/build-scripts/kali-nethunter-pro/-/environments
+#
+## Operate -> Environments -> New environment
+#    - Name: production
+#    - URL: https://build.nethunter.com
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#
+## REF (Project): https://gitlab.com/kalilinux/nethunter/build-scripts/kali-nethunter-pro/-/settings/ci_cd
+#
+
+## Settings -> CI/CD -> Variables -> Expand -> Add variable
+#   - Type: Variable
+#   - Environments: production
+#   - Visibility: Masked
+#   - Flags
+#       Protect variable: Enabled
+#       Expand variable reference: Disabled
+#   - Key: MOBIAN_CI_SSH_KEY
+#   - Value: <kali_nethunterpro_build_os_private_key | base64 -w0; echo>
+
+## Settings -> CI/CD -> Variables -> Expand -> Add variable
+#   - Type: Variable
+#   - Environments: production
+#   - Visibility: Masked
+#   - Flags
+#       Protect variable: Enabled
+#       Expand variable reference: Disabled
+#   - Key: SSH_USER
+#   - Value: <kali_nethunterpro_build_os_user>
+
+## Settings -> CI/CD -> Variables -> Expand -> Add variable
+#   - Type: Variable
+#   - Environments: production
+#   - Visibility: Masked
+#   - Flags
+#       Protect variable: Enabled
+#       Expand variable reference: Disabled
+#   - Key: MOBIAN_CACHE_HOST
+#   - Value: <ansible_host>
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 include:
   - .gitlab-ci/job-definitions.yml
   - .gitlab-ci/global-declarations.yml
