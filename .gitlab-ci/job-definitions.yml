@@ -1,21 +1,22 @@
-prepare-artifacts-dir:
-  stage: .pre
-  script:
-    - ssh gitlab-ci@${MOBIAN_CACHE_HOST} mkdir -p ${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
-
-cleanup-artifacts-dir:
-  interruptible: false
-  stage: .post
-  script:
-    - ssh gitlab-ci@${MOBIAN_CACHE_HOST} rm -rf ${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
-  when: always
+## Disabling jobs as we don't have a caching host
+#prepare-artifacts-dir:
+#  stage: .pre
+#  script:
+#    - ssh gitlab-ci@${MOBIAN_CACHE_HOST} mkdir -p ${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
+#
+#cleanup-artifacts-dir:
+#  interruptible: false
+#  stage: .post
+#  script:
+#    - ssh gitlab-ci@${MOBIAN_CACHE_HOST} rm -rf ${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
+#  when: always
 
 .save-artifacts: &save-artifacts |
-  scp ${MOBIAN_ARTIFACTS} gitlab-ci@${MOBIAN_CACHE_HOST}:${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
+  echo skipping due to lack of caching host - scp ${MOBIAN_ARTIFACTS} gitlab-ci@${MOBIAN_CACHE_HOST}:${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
 
 .restore-artifacts: &restore-artifacts |
   for artifact in ${MOBIAN_ARTIFACTS}; do
-    scp gitlab-ci@${MOBIAN_CACHE_HOST}:${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}/${artifact} .
+    echo skipping due to lack of caching host - scp gitlab-ci@${MOBIAN_CACHE_HOST}:${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}/${artifact} .
   done
 
 .upload-images: &upload-images |
@@ -26,9 +27,9 @@ cleanup-artifacts-dir:
     IMAGES_DIR=${IMAGES_CI_ROOT}/$(date --date="${CI_PIPELINE_CREATED_AT}" +%Y%m%d.%H%M)
     SSH_USER=gitlab-ci
   fi
-  ssh ${SSH_USER}@${MOBIAN_IMAGES_HOST} mkdir -p ${IMAGES_DIR}
+  echo skipping - ssh ${SSH_USER}@${MOBIAN_IMAGES_HOST} mkdir -p ${IMAGES_DIR}
   for image in ${IMAGE_NAME}*; do
-    scp ${image} ${SSH_USER}@${MOBIAN_IMAGES_HOST}:${IMAGES_DIR}/
+    echo skipping - scp ${image} ${SSH_USER}@${MOBIAN_IMAGES_HOST}:${IMAGES_DIR}/
   done
 
 .finish-images: &finish-images |
@@ -63,6 +64,9 @@ cleanup-artifacts-dir:
       ${MOBIAN_EXTRA_DEBOS_ARGS}
       rootfs.yaml
     - *save-artifacts
+  artifacts:
+    paths:
+      - ./rootfs-*.tar.gz
 
 .rootfs-installer:
   stage: rootfs
@@ -75,6 +79,9 @@ cleanup-artifacts-dir:
       ${MOBIAN_EXTRA_DEBOS_ARGS}
       installfs.yaml
     - *save-artifacts
+  artifacts:
+    paths:
+      - ./installfs-*.tar.gz
 
 .devicefs:
   stage: devicefs
@@ -100,6 +107,9 @@ cleanup-artifacts-dir:
     - *sign-images
     - IMAGES_UPLOAD_SUBDIR=rootfs
     - *upload-images
+  artifacts:
+    paths:
+      - ./rootfs-*.tar.gz
 
 .image:
   stage: image
