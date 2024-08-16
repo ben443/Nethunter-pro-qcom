@@ -10,9 +10,11 @@ default:
   retry: 1
   interruptible: true
   before_script:
-    - chmod 0400 "$MOBIAN_CI_SSH_KEY"
     - eval $(ssh-agent -s)
-    - ssh-add "$MOBIAN_CI_SSH_KEY"
+    - echo "${MOBIAN_CI_SSH_KEY}" | base64 -d | ssh-add -
+    - unset MOBIAN_CI_SSH_KEY
+    - mkdir -pv ~/.ssh/
+    - ssh-keyscan -t ssh-ed25519 ${MOBIAN_CACHE_HOST} > ~/.ssh/known_hosts
     - |
       if [ -f "$MOBIAN_SSH_KEY" ]; then
           chmod 0400 "$MOBIAN_SSH_KEY"
@@ -25,13 +27,14 @@ workflow:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
-    - if: $CI_PROJECT_ROOT_NAMESPACE == "Mobian-team"
+    ## REF: https://gitlab.com/kalilinux/nethunter/build-scripts/kali-nethunter-pro/
+    - if: $CI_PROJECT_ROOT_NAMESPACE == "kalilinux"
       when: always
     - when: never
 
 variables:
-  DEBIAN_SUITE: "trixie"
-  MOBIAN_SUITE: "trixie"
+  DEBIAN_SUITE: "kali-rolling"
+  MOBIAN_SUITE: "bookworm"
   MOBIAN_BOOT_PARTITION_START: "1MiB"
   MOBIAN_FILESYSTEM: "ext4"
   MOBIAN_IMAGE_SIZE: "6GB"
@@ -39,10 +42,10 @@ variables:
   MOBIAN_INCLUDE_NONFREE: "false"
   MOBIAN_MINIRAMFS: "false"
   MOBIAN_PARTITION_TABLE: "gpt"
-  ARTIFACTS_ROOT: /srv/builder/images
+  ARTIFACTS_ROOT: /srv/builder/artifacts
   DEVICEFS_UPLOAD: "false"
-  IMAGES_ROOT: /var/www/images
-  IMAGES_CI_ROOT: /var/www/ci-images
+  IMAGES_ROOT: /srv/builder/images
+  IMAGES_CI_ROOT: /srv/builder/ci-images
   MOBIAN_IMAGES_HOST: mobian.org
   MOBIAN_CACHE_HOST: amd64-ssd.runner.mobian.org
 
