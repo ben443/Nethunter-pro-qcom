@@ -27,9 +27,9 @@ actions:
 {{ end }}
     mirror: {{ $mirror }}
     variant: minbase
-    keyring-file: /usr/share/keyrings/kali-archive-keyring.gpg
+    keyring-file: kali-archive-keyring.gpg
     keyring-package: kali-archive-keyring
-    ## check-gpg: false
+    #check-gpg: false
 
   - action: run
     description: Fix build on usr-merged systems
