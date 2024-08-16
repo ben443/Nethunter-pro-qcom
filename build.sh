@@ -32,9 +32,10 @@ suite="bookworm"
 contrib="true"
 sign=
 miniramfs=
+version=$( date +%Y%m%d )
 verbose=
 
-while getopts "cdDvizobsZCrR:x:S:e:H:f:g:h:m:M:p:t:u:F:" opt
+while getopts "cdDvizobsZCrR:x:S:e:H:f:g:h:m:M:p:t:u:F:V:" opt
 do
   case "${opt}" in
     c ) crypt_root=1 ;;
@@ -63,6 +64,7 @@ do
     S ) suite="${OPTARG}" ;;
     C ) contrib=1 ;;
     r ) miniramfs=1 ;;
+    V ) version="${OPTARG}" ;;
     * )
       echo "Unknown option '${opt}'"
       exit 1
@@ -104,10 +106,10 @@ esac
 
 installfs_file="installfs-${arch}.tar.gz"
 
-image_file="nethunterpro-$device-$environment-`date +%Y%m%d`"
+image_file="nethunterpro-${version}-${device}-${environment}"
 if [ "$installer" ]; then
   image="installer"
-  image_file="nethunterpro-installer-$device-$environment-`date +%Y%m%d`"
+  image_file="${image_file}-${image}"
 fi
 
 rootfs_file="rootfs-${arch}-${environment}.tar.gz"
