@@ -9,15 +9,16 @@ stages:
 default:
   retry: 1
   interruptible: true
-  before_script:
-    - chmod 0400 "$MOBIAN_CI_SSH_KEY"
-    - eval $(ssh-agent -s)
-    - ssh-add "$MOBIAN_CI_SSH_KEY"
-    - |
-      if [ -f "$MOBIAN_SSH_KEY" ]; then
-          chmod 0400 "$MOBIAN_SSH_KEY"
-          ssh-add "$MOBIAN_SSH_KEY"
-      fi
+  ## Disabling jobs as we don't have a caching host
+  #before_script:
+  #  - chmod 0400 "$MOBIAN_CI_SSH_KEY"
+  #  - eval $(ssh-agent -s)
+  #  - ssh-add "$MOBIAN_CI_SSH_KEY"
+  #  - |
+  #    if [ -f "$MOBIAN_SSH_KEY" ]; then
+  #        chmod 0400 "$MOBIAN_SSH_KEY"
+  #        ssh-add "$MOBIAN_SSH_KEY"
+  #    fi
   tags:
     - kvm
 
@@ -25,13 +26,14 @@ workflow:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
-    - if: $CI_PROJECT_ROOT_NAMESPACE == "Mobian-team"
+    ## REF: https://gitlab.com/kalilinux/nethunter/build-scripts/kali-nethunter-pro/
+    - if: $CI_PROJECT_ROOT_NAMESPACE == "kalilinux"
       when: always
     - when: never
 
 variables:
-  DEBIAN_SUITE: "trixie"
-  MOBIAN_SUITE: "trixie"
+  DEBIAN_SUITE: "kali-rolling"
+  MOBIAN_SUITE: "bookworm"
   MOBIAN_BOOT_PARTITION_START: "1MiB"
   MOBIAN_FILESYSTEM: "ext4"
   MOBIAN_IMAGE_SIZE: "6GB"

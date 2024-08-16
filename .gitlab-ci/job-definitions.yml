@@ -1,21 +1,22 @@
-prepare-artifacts-dir:
-  stage: .pre
-  script:
-    - ssh gitlab-ci@${MOBIAN_CACHE_HOST} mkdir -p ${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
-
-cleanup-artifacts-dir:
-  interruptible: false
-  stage: .post
-  script:
-    - ssh gitlab-ci@${MOBIAN_CACHE_HOST} rm -rf ${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
-  when: always
+## Disabling jobs as we don't have a caching host
+#prepare-artifacts-dir:
+#  stage: .pre
+#  script:
+#    - ssh gitlab-ci@${MOBIAN_CACHE_HOST} mkdir -p ${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
+#
+#cleanup-artifacts-dir:
+#  interruptible: false
+#  stage: .post
+#  script:
+#    - ssh gitlab-ci@${MOBIAN_CACHE_HOST} rm -rf ${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
+#  when: always
 
 .save-artifacts: &save-artifacts |
-  scp ${MOBIAN_ARTIFACTS} gitlab-ci@${MOBIAN_CACHE_HOST}:${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
+  echo skipping due to lack of caching host - scp ${MOBIAN_ARTIFACTS} gitlab-ci@${MOBIAN_CACHE_HOST}:${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
 
 .restore-artifacts: &restore-artifacts |
   for artifact in ${MOBIAN_ARTIFACTS}; do
-    scp gitlab-ci@${MOBIAN_CACHE_HOST}:${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}/${artifact} .
+    echo skipping due to lack of caching host - scp gitlab-ci@${MOBIAN_CACHE_HOST}:${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}/${artifact} .
   done
 
 .upload-images: &upload-images |
@@ -66,6 +67,20 @@ cleanup-artifacts-dir:
 
 .rootfs-installer:
   stage: rootfs
+  before_script:
+    ## YYYY/MM/DD HH:MM:SS Debootstrap | E: Release signed by unknown key (key id ED444FF07D8D0BF6)
+    ## REF: https://gitlab.com/kalilinux/build-scripts/kali-docker/-/blob/master/.gitlab-ci.yml
+    ## ERROR: The certificate of 'kali.download' is not trusted.
+    ## ERROR: The certificate of 'kali.download' doesn't have a known issuer.
+    ##   wget --no-check-certificate [...]
+    - |
+      KEYRING_PKG_PATH=$(wget --no-check-certificate -nv -O - \
+          https://kali.download/kali/dists/kali-rolling/main/binary-amd64/Packages.gz \
+          | gzip -dc | grep ^Filename: | grep kali-archive-keyring | head -n 1 | awk '{print $2}')
+      KEYRING_PKG_URL="https://kali.download/kali/$KEYRING_PKG_PATH"
+      wget --no-check-certificate -nv "$KEYRING_PKG_URL"
+      dpkg -i kali-archive-keyring_*_all.deb
+      rm -v kali-archive-keyring_*_all.deb
   script:
     - MOBIAN_ARTIFACTS="installfs-${ARCH}-${MOBIAN_SUITE}.tar.gz"
     - debos --cpus=1 --scratchsize=8G
