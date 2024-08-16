@@ -1,21 +1,22 @@
-prepare-artifacts-dir:
-  stage: .pre
-  script:
-    - ssh gitlab-ci@${MOBIAN_CACHE_HOST} mkdir -p ${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
-
-cleanup-artifacts-dir:
-  interruptible: false
-  stage: .post
-  script:
-    - ssh gitlab-ci@${MOBIAN_CACHE_HOST} rm -rf ${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
-  when: always
+## Disabling jobs as we don't have a caching host
+#prepare-artifacts-dir:
+#  stage: .pre
+#  script:
+#    - ssh gitlab-ci@${MOBIAN_CACHE_HOST} mkdir -p ${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
+#
+#cleanup-artifacts-dir:
+#  interruptible: false
+#  stage: .post
+#  script:
+#    - ssh gitlab-ci@${MOBIAN_CACHE_HOST} rm -rf ${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
+#  when: always
 
 .save-artifacts: &save-artifacts |
-  scp ${MOBIAN_ARTIFACTS} gitlab-ci@${MOBIAN_CACHE_HOST}:${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
+  echo skipping due to lack of caching host - scp ${MOBIAN_ARTIFACTS} gitlab-ci@${MOBIAN_CACHE_HOST}:${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}
 
 .restore-artifacts: &restore-artifacts |
   for artifact in ${MOBIAN_ARTIFACTS}; do
-    scp gitlab-ci@${MOBIAN_CACHE_HOST}:${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}/${artifact} .
+    echo skipping due to lack of caching host - scp gitlab-ci@${MOBIAN_CACHE_HOST}:${ARTIFACTS_ROOT}/${CI_PIPELINE_ID}/${artifact} .
   done
 
 .upload-images: &upload-images |
@@ -53,6 +54,7 @@ cleanup-artifacts-dir:
   stage: rootfs
   script:
     - MOBIAN_ARTIFACTS="rootfs-${ARCH}-${MOBIAN_GRAPHICAL_SHELL}-${MOBIAN_SUITE}.tar.gz"
+    - apt-get update && apt-get install --yes user-mode-linux # Using shared runners without /dev/kvm
     - debos --cpus=1 --scratchsize=8G
       -t architecture:${ARCH}
       -t environment:${MOBIAN_GRAPHICAL_SHELL}
