@@ -107,7 +107,7 @@ cleanup-artifacts-dir:
   script:
     - MOBIAN_ARTIFACTS="rootfs-${ARCH}-${MOBIAN_GRAPHICAL_SHELL}-${MOBIAN_SUITE}.tar.gz"
     - *restore-artifacts
-    - IMAGE_NAME=kali-nethunterpro-${MOBIAN_DEVICE_NAME}-${MOBIAN_GRAPHICAL_SHELL}-$(date --date="${CI_PIPELINE_CREATED_AT}" +%Y%m%d)
+    - IMAGE_NAME=nethunterpro-${MOBIAN_DEVICE_NAME}-${MOBIAN_GRAPHICAL_SHELL}-$(date --date="${CI_PIPELINE_CREATED_AT}" +%Y%m%d)
     - debos --verbose --cpus=1 --scratchsize=8G
       -t architecture:${ARCH}
       -t environment:${MOBIAN_GRAPHICAL_SHELL}
@@ -133,7 +133,7 @@ cleanup-artifacts-dir:
     - INSTALLFS_NAME="installfs-${ARCH}-${MOBIAN_SUITE}.tar.gz"
     - MOBIAN_ARTIFACTS="rootfs-${MOBIAN_DEVICE_NAME}-${MOBIAN_GRAPHICAL_SHELL}.tar.gz ${INSTALLFS_NAME}"
     - *restore-artifacts
-    - IMAGE_NAME=kali-nethunterpro-installer-${MOBIAN_DEVICE_NAME}-${MOBIAN_GRAPHICAL_SHELL}-$(date --date="${CI_PIPELINE_CREATED_AT}" +%Y%m%d)
+    - IMAGE_NAME=nethunterpro-installer-${MOBIAN_DEVICE_NAME}-${MOBIAN_GRAPHICAL_SHELL}-$(date --date="${CI_PIPELINE_CREATED_AT}" +%Y%m%d)
     - zcat "rootfs-${MOBIAN_DEVICE_NAME}-${MOBIAN_GRAPHICAL_SHELL}.tar.gz" | tar2sqfs "rootfs-${MOBIAN_DEVICE_NAME}-${MOBIAN_GRAPHICAL_SHELL}.sqfs" > /dev/null 2>&1
     - debos --verbose --cpus=1 --scratchsize=8G
       -t architecture:${ARCH}

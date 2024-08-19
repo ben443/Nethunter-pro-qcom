@@ -6,7 +6,7 @@ if [ -z "${ARGS+x}" ]; then
     ARGS=""
 fi
 
-device="pinephonepro"
+device="pinephone"
 image="image"
 partitiontable="gpt"
 filesystem="ext4"
@@ -97,6 +97,9 @@ case "${device}" in
     arch="amd64"
     family="amd64"
     ARGS="${ARGS} -t imagesize:15GB -t installersize:10GB"
+    if [ "${device}" = "amd64" ]; then
+      ARGS="${ARGS} -t nonfree:true"
+    fi
     ;;
   * )
     echo "Unsupported device '${device}'"
