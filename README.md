@@ -17,9 +17,12 @@ The [default user](https://www.kali.org/docs/introduction/default-credentials/) 
 To build the image, you need to have `debos` and `bmaptool`. On a Kali Linux system, install these dependencies by typing the following command in a terminal:
 
 ```console
+sudo apt install debos bmap-tools f2fs-tools
 ```
 
 If you want to build with EXT4 filesystem f2fs-tools is not required.
+
+Note: DNS resolution may break after installing the above packages. To fix this, add a valid DNS resolver (e.g., `1.1.1.1`) to the file `/etc/systemd/resolved.conf` and then `sudo systemctl restart systemd-resolved.service`
 
 The build system will cache and re-use it's output files.
 To create a fresh build remove `*.tar.gz`, `*.sqfs` and `*.img` before starting the build.
