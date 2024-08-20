@@ -7,7 +7,7 @@ actions:
     recommends: false
     description: Install Plasma Mobile packages
     packages:
-      - mobian-plasma-mobile
+      - plasma-mobile
       - angelfish
       - elisa
       - firefox-esr
