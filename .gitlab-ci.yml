@@ -55,6 +55,8 @@ include:
   - .gitlab-ci/global-declarations.yml
   - .gitlab-ci/devices.yml
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 rootfs-amd64-phosh:
   extends:
     - .rootfs-generic
@@ -72,13 +74,15 @@ installfs-arm64:
     - .rootfs-installer
     - .arch-arm64
 
-devicefs-librem5-phosh:
-  extends:
-    - .devicefs
-    - .device-librem5
-    - .shell-phosh
-  needs:
-    - rootfs-arm64-phosh
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#devicefs-librem5-phosh:
+#  extends:
+#    - .devicefs
+#    - .device-librem5
+#    - .shell-phosh
+#  needs:
+#    - rootfs-arm64-phosh
 
 devicefs-pinephone-phosh:
   extends:
@@ -104,13 +108,15 @@ devicefs-pinephonepro-phosh:
 #  needs:
 #    - rootfs-arm64-phosh
 
-devicefs-pinetab2-phosh:
- extends:
-   - .devicefs
-   - .device-pinetab2
-   - .shell-phosh
- needs:
-   - rootfs-arm64-phosh
+#devicefs-pinetab2-phosh:
+# extends:
+#   - .devicefs
+#   - .device-pinetab2
+#   - .shell-phosh
+# needs:
+#   - rootfs-arm64-phosh
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 image-pinephone-phosh:
   extends:
@@ -136,21 +142,21 @@ image-pinephonepro-phosh:
 #  needs:
 #    - rootfs-arm64-phosh
 
-image-pinetab2-phosh:
-  extends:
-    - .image
-    - .device-pinetab2
-    - .shell-phosh
-  needs:
-    - rootfs-arm64-phosh
+#image-pinetab2-phosh:
+#  extends:
+#    - .image
+#    - .device-pinetab2
+#    - .shell-phosh
+#  needs:
+#    - rootfs-arm64-phosh
 
-image-librem5-phosh:
-  extends:
-    - .image
-    - .device-librem5
-    - .shell-phosh
-  needs:
-    - rootfs-arm64-phosh
+#image-librem5-phosh:
+#  extends:
+#    - .image
+#    - .device-librem5
+#    - .shell-phosh
+#  needs:
+#    - rootfs-arm64-phosh
 
 image-sdm845-phosh:
   extends:
@@ -168,13 +174,13 @@ image-sm7225-phosh:
   needs:
     - rootfs-arm64-phosh
 
-image-amd64-phosh:
-  extends:
-    - .image
-    - .device-amd64
-    - .shell-phosh
-  needs:
-    - rootfs-amd64-phosh
+#image-amd64-phosh:
+#  extends:
+#    - .image
+#    - .device-amd64
+#    - .shell-phosh
+#  needs:
+#    - rootfs-amd64-phosh
 
 image-amd64-nonfree-phosh:
   extends:
@@ -184,14 +190,16 @@ image-amd64-nonfree-phosh:
   needs:
     - rootfs-amd64-phosh
 
-installer-librem5-phosh:
-  extends:
-    - .installer
-    - .device-librem5
-    - .shell-phosh
-  needs:
-    - installfs-arm64
-    - devicefs-librem5-phosh
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#installer-librem5-phosh:
+#  extends:
+#    - .installer
+#    - .device-librem5
+#    - .shell-phosh
+#  needs:
+#    - installfs-arm64
+#    - devicefs-librem5-phosh
 
 installer-pinephone-phosh:
   extends:
@@ -220,11 +228,11 @@ installer-pinephonepro-phosh:
 #    - installfs-arm64
 #    - devicefs-pinetab-phosh
 
-installer-pinetab2-phosh:
- extends:
-   - .installer
-   - .device-pinetab2
-   - .shell-phosh
- needs:
-   - installfs-arm64
-   - devicefs-pinetab2-phosh
+#installer-pinetab2-phosh:
+# extends:
+#   - .installer
+#   - .device-pinetab2
+#   - .shell-phosh
+# needs:
+#   - installfs-arm64
+#   - devicefs-pinetab2-phosh
