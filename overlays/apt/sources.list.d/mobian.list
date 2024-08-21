@@ -1,1 +1,3 @@
 deb http://repo.mobian.org/ @@SUITE@@ main non-free-firmware
+deb http://deb.debian.org main non-free-firmware
+deb http://deb.debian.org main non-free

@@ -77,4 +77,5 @@ actions:
       - powersupply-gtk
       - webext-ublock-origin-firefox
       - chatty
-
+      - mobian-phosh
+      - mobian-phosh-phone
