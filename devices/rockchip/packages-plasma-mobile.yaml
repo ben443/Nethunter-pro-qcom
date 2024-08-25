@@ -9,6 +9,6 @@ actions:
     description: Install device-specific packages for Plasma Mobile
     packages:
 {{ if ne $device "pinetab2" }}
-      - mobian-plasma-mobile-phone
+      - plasma-mobile
       - firefox-esr-mobile-config
 {{ end }}
