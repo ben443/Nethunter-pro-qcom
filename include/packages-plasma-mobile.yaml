@@ -7,7 +7,7 @@ actions:
     recommends: false
     description: Install Plasma Mobile packages
     packages:
-      - mobian-plasma-mobile
+      - plasma-mobile
       - angelfish
       - elisa
       - firefox-esr
@@ -18,3 +18,60 @@ actions:
       - qmlkonsole
       - tokodon
       - webext-ublock-origin-firefox
+      - plasma-mobile
+      - plasma-mobile-tweaks
+      - "plasma-*-*"
+      - "plasma-*"
+      - angelfish
+      - elisa
+      - firefox-esr
+      - kdeconnect
+      - ktrip
+      - neochat
+      - phog
+      - qmlkonsole
+      - tokodon
+      - webext-ublock-origin-firefox
+      - phosh-mobile-settings
+      - betterlockscreen
+      - kde-config-screenlocker
+      - kde-config-sddm
+      - wifite
+      - hashcat
+      - build-essential
+      - qbittorrent
+      - wifiphisher
+      - hosthunter
+      - dirb
+      - nmap
+      - fish
+      - neofetch
+      - cmake
+      - burpsuite
+      - lynis
+      - peass
+      - modemmanager-dev
+      - maliit-keyboard
+      - gnome-calculator
+      - gnome-calendar
+      - gnome-console
+      - gnome-maps
+      - gnome-software
+      - gnome-software-plugin-deb
+      - gnome-software-plugin-flatpak
+      - gnome-sound-recorder
+      - gnome-text-editor
+      - gnome-usage
+      - gnome-weather
+      - lollypop
+      - loupe
+      - phog
+      - phosh-mobile-settings
+      - phosh-plugins
+      - phosh-tour
+      - portfolio-filemanager
+      - powersupply-gtk
+      - webext-ublock-origin-firefox
+      - chatty
+      - mobian-phosh
+      - mobian-phosh-phone
