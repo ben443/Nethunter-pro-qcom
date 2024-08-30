@@ -1,5 +1,15 @@
 #!/bin/sh
 
+# This script will run during init-premount and losetup rootfs image
+# from any partition provided on `rootimg=` value in cmdline along
+# with full path of the rootfs image file.
+# Example:
+#	In android perspective: if you've stored rootfs image in emmc
+# path i.e. /sdcard/myrootfs.img then you can provide following
+# cmdline value to boot the OS from the rootfs image:
+# rootimg=PARTLABEL=userdata/media/0/myrootfs.img
+
+
 set -e
 
 case "${1}" in
@@ -26,7 +36,7 @@ done
 if [ -b /dev/${IMGPART} ]
 then
     DEVICE=/dev/${IMGPART}
-elif blkid -t ${IMGPART} -o device
+elif blkid -t ${IMGPART} -o device > /dev/null
 then
     DEVICE=`blkid -t ${IMGPART} -o device`
 else
