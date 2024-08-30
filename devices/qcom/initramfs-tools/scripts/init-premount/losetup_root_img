@@ -1,14 +1,14 @@
 #!/bin/sh
 
-# This script will run during init-premount and losetup rootfs image
-# from any partition provided on `rootimg=` value in cmdline along
-# with full path of the rootfs image file.
+# This script runs during the init-premount phase and sets up a loop
+# device for the root filesystem image from any partition specified
+# by the rootimg= value in the cmdline, along with the full path to
+# the rootfs image file.
 # Example:
-#	In android perspective: if you've stored rootfs image in emmc
-# path i.e. /sdcard/myrootfs.img then you can provide following
-# cmdline value to boot the OS from the rootfs image:
+#	In the context of Android, if you've stored the rootfs image in
+# the eMMC path (e.g., /sdcard/myrootfs.img), you can provide the
+# following command line value to boot the OS from the rootfs image:
 # rootimg=PARTLABEL=userdata/media/0/myrootfs.img
-
 
 set -e
 
@@ -44,12 +44,14 @@ else
 fi
 
 # Mount and losetup the image file
+LOOP=`losetup -f`
 mkdir -p ${MNTDIR}
-mount ${DEVICE} ${MNTDIR}
+mount -t `blkid ${DEVICE} -o value -s TYPE`  ${DEVICE} ${MNTDIR}
 
 if [ -f "${IMGPATH}" ]
 then
-	losetup -f ${IMGPATH}
+	[ -b "${LOOP}" ] || mknod ${LOOP} b 7 0
+	losetup ${LOOP} ${IMGPATH}
 else
 	umount ${MNTDIR}
 	rmdir ${MNTDIR}
