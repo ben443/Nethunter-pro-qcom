@@ -35,7 +35,7 @@ fi
 
 # Mount and losetup the image file
 mkdir -p ${MNTDIR}
-mount ${DEVICE} ${MNTDIR} || exit
+mount ${DEVICE} ${MNTDIR}
 
 if [ -f "${IMGPATH}" ]
 then
