@@ -4,6 +4,8 @@
 architecture: {{ $architecture }}
 
 actions:
-  # Nothing to be done, but we need an action anyway
-  - action: run
-    command: true
+  - action: apt
+    recommends: false
+    description: Install device-specific packages for Phosh
+    packages:
+      - gnome-firmware

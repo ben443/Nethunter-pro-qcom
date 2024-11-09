@@ -11,6 +11,10 @@ adduser "${USERNAME}" sudo
 # Needed for hardware access rights
 adduser "${USERNAME}" bluetooth
 adduser "${USERNAME}" plugdev
-adduser "${USERNAME}" feedbackd
+
+# Feedbackd is only present on Phosh images, let's not fail if it's missing
+if getent group feedbackd > /dev/null; then
+  adduser "${USERNAME}" feedbackd
+fi
 
 echo "${USERNAME}:${PASSWORD}" | chpasswd

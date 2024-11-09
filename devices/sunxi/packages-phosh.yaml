@@ -9,6 +9,7 @@ actions:
     description: Install device-specific packages for Phosh
     packages:
 {{ if ne $device "pinetab" }}
+      - gnome-firmware
       - mobian-phosh-phone
       - firefox-esr-mobile-config
 {{ end }}

@@ -8,7 +8,7 @@ actions:
   - action: run
     description: Prepare boot images
     chroot: true
-    script: bootloader.sh {{ $device }}
+    script: bootloader.sh {{ $device }} {{ $image }}
 
   - action: run
     description: Extract boot images

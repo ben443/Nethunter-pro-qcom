@@ -11,5 +11,6 @@ actions:
 {{ if ne $device "pinetab2" }}
       - mobian-phosh-phone
       - firefox-esr-mobile-config
+      - gnome-firmware
 {{ end }}
       - gnome-snapshot

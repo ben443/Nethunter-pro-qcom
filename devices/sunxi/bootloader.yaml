@@ -1,5 +1,5 @@
 {{- $architecture := or .architecture "arm64" -}}
-{{- $device := or .device "pinephone" }}
+{{- $device := or .device "pinephone" -}}
 
 architecture: {{ $architecture }}
 
@@ -8,3 +8,8 @@ actions:
     description: Ensure we have a valid extlinux.conf
     chroot: true
     command: /etc/kernel/postinst.d/zz-u-boot-menu "$(linux-version list | tail -1)"
+
+  - action: run
+    description: Configure alternative vccq boot
+    chroot: true
+    script: bootloader.sh
