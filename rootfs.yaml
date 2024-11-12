@@ -46,13 +46,6 @@ actions:
     source: overlays/apt/
     destination: /etc/apt/
 
-{{ if eq $environment "plasma-mobile" }}
-  - action: overlay
-    description: Enable Plasma Mobile repository
-    source: overlays/plasma-mobile/apt/
-    destination: /etc/apt/
-{{ end }}
-
   - action: overlay
     description: Enable resize of root partition
     source: overlays/repart.d/
