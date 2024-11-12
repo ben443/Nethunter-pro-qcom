@@ -56,6 +56,8 @@ include:
   - .gitlab-ci/devices.yml
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#                                    rootfs                                   #
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 rootfs-amd64-phosh:
   extends:
@@ -69,12 +71,16 @@ rootfs-arm64-phosh:
     - .arch-arm64
     - .shell-phosh
 
-installfs-arm64:
-  extends:
-    - .rootfs-installer
-    - .arch-arm64
+## NetHunter Pro doesn't have an 'installer' platform at this point in time
+#installfs-arm64:
+#  extends:
+#    - .rootfs-installer
+#    - .arch-arm64
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#                                   devicefs                                  #
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## NetHunter Pro doesn't have an 'installer' platform at this point in time  ##
 
 #devicefs-librem5-phosh:
 #  extends:
@@ -84,21 +90,21 @@ installfs-arm64:
 #  needs:
 #    - rootfs-arm64-phosh
 
-devicefs-pinephone-phosh:
-  extends:
-    - .devicefs
-    - .device-pinephone
-    - .shell-phosh
-  needs:
-    - rootfs-arm64-phosh
+#devicefs-pinephone-phosh:
+#  extends:
+#    - .devicefs
+#    - .device-pinephone
+#    - .shell-phosh
+#  needs:
+#    - rootfs-arm64-phosh
 
-devicefs-pinephonepro-phosh:
-  extends:
-    - .devicefs
-    - .device-pinephonepro
-    - .shell-phosh
-  needs:
-    - rootfs-arm64-phosh
+#devicefs-pinephonepro-phosh:
+#  extends:
+#    - .devicefs
+#    - .device-pinephonepro
+#    - .shell-phosh
+#  needs:
+#    - rootfs-arm64-phosh
 
 #devicefs-pinetab-phosh:
 #  extends:
@@ -116,6 +122,8 @@ devicefs-pinephonepro-phosh:
 # needs:
 #   - rootfs-arm64-phosh
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#                                     image                                   #
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 image-pinephone-phosh:
@@ -191,6 +199,9 @@ image-amd64-nonfree-phosh:
     - rootfs-amd64-phosh
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#                                  installer                                  #
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## NetHunter Pro doesn't have an 'installer' platform at this point in time  ##
 
 #installer-librem5-phosh:
 #  extends:
@@ -201,23 +212,23 @@ image-amd64-nonfree-phosh:
 #    - installfs-arm64
 #    - devicefs-librem5-phosh
 
-installer-pinephone-phosh:
-  extends:
-    - .installer
-    - .device-pinephone
-    - .shell-phosh
-  needs:
-    - installfs-arm64
-    - devicefs-pinephone-phosh
+#installer-pinephone-phosh:
+#  extends:
+#    - .installer
+#    - .device-pinephone
+#    - .shell-phosh
+#  needs:
+#    - installfs-arm64
+#    - devicefs-pinephone-phosh
 
-installer-pinephonepro-phosh:
-  extends:
-    - .installer
-    - .device-pinephonepro
-    - .shell-phosh
-  needs:
-    - installfs-arm64
-    - devicefs-pinephonepro-phosh
+#installer-pinephonepro-phosh:
+#  extends:
+#    - .installer
+#    - .device-pinephonepro
+#    - .shell-phosh
+#  needs:
+#    - installfs-arm64
+#    - devicefs-pinephonepro-phosh
 
 #installer-pinetab-phosh:
 #  extends:
