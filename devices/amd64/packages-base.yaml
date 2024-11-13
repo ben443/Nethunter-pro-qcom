@@ -40,7 +40,7 @@ actions:
       - firmware-nvidia-graphics
       - firmware-qlogic
       - firmware-realtek
-      - firmware-realtek-rtl8723cs-bt
+      # - firmware-realtek-rtl8723cs-bt
       - firmware-siano
       - firmware-sof-signed
       - firmware-zd1211
