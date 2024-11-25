@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 USERNAME=$1
 [ "$USERNAME" ] || exit 1

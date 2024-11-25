@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 # Remove apt packages which are no longer unnecessary and delete
 # downloaded packages
