@@ -1,11 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
-export PATH="/sbin:/usr/sbin:${PATH}"
 DEBOS_CMD=debos
-if [ -z "${ARGS+x}" ]; then
-    ARGS=""
-fi
-
 device="pinephone"
 image="image"
 partitiontable="gpt"
@@ -13,7 +8,7 @@ filesystem="ext4"
 environment="phosh"
 crypt_root=
 crypt_password=
-hostname=
+hostname="kali"
 arch="arm64"
 do_compress=
 family=
@@ -21,10 +16,10 @@ image_only=
 installer=
 zram=
 memory=
-mirror=
-password=
+mirror="http://http.kali.org/kali"
+password="1234"
 use_docker=
-username=
+username="kali"
 no_blockmap=
 ssh=
 debian_suite="kali-rolling"
@@ -35,8 +30,13 @@ miniramfs=
 version=$( date +%Y%m%d )
 verbose=
 
-while getopts "cdDvizobsZCrR:x:S:e:H:f:g:h:m:M:p:t:u:F:V:" opt
-do
+if [ -z "${ARGS+x}" ]; then
+  ARGS=""
+fi
+
+export PATH="/sbin:/usr/sbin:${PATH}"
+
+while getopts "cdDvizobsZCrR:x:S:e:H:f:g:h:m:M:p:t:u:F:V:" opt; do
   case "${opt}" in
     c ) crypt_root=1 ;;
     R ) crypt_password=${OPTARG} ;;
@@ -66,7 +66,7 @@ do
     r ) miniramfs=1 ;;
     V ) version="${OPTARG}" ;;
     * )
-      echo "Unknown option '${opt}'"
+      echo "Unknown option '${opt}'" 1>&2
       exit 1
       ;;
   esac
@@ -102,7 +102,8 @@ case "${device}" in
     fi
     ;;
   * )
-    echo "Unsupported device '${device}'"
+    echo "Unsupported device '${device}' "1>&2
+    echo "Supported devices: pinephone, pinephonepro, pinetab, pinetab2, sdm845, sm7225, amd64"
     exit 1
     ;;
 esac
@@ -120,23 +121,31 @@ if echo "${ARGS}" | grep -q "nonfree:true"; then
   rootfs_file="rootfs-${arch}-${environment}-nonfree.tar.gz"
 fi
 
-# Cleanup previous artifacts if we're not re-using them
+## Cleanup previous artifacts if we're not re-using them
 if [ ! "${image_only}" ]; then
-  rm -f "${rootfs_file}" "${installfs_file}" \
-        "rootfs-${device}-${environment}.tar.gz"
+  rm -vf "${rootfs_file}" \
+         "${installfs_file}" \
+         "rootfs-${device}-${environment}.tar.gz"
 fi
 
 if [ "${use_docker}" ]; then
   DEBOS_CMD=docker
-  ARGS="run --rm --interactive --tty --device /dev/kvm --workdir /recipes \
+  ARGS="run \
+            --rm \
+            --interactive \
+            --tty \
+            --device /dev/kvm \
+            --workdir /recipes \
             --mount type=bind,source=$(pwd),destination=/recipes \
-            --security-opt label=disable godebos/debos ${ARGS}"
+            --security-opt label=disable \
+            godebos/debos \
+            ${ARGS}"
 fi
 
 [ "${debug}" ] && ARGS="${ARGS} --debug-shell"
 [ "${verbose}" ] && ARGS="${ARGS} --verbose"
 [ "${username}" ] && ARGS="${ARGS} -t username:${username}"
-# Must remain above password otherwise password will override this
+## Must remain above password otherwise ${password} will override this
 [ "${crypt_password}" ] && ARGS="${ARGS} -t crypt_password:${crypt_password}"
 [ "${password}" ] && ARGS="${ARGS} -t password:${password}"
 [ "${ssh}" ] && ARGS="${ARGS} -t ssh:${ssh}"
@@ -151,15 +160,22 @@ fi
 [ "${zram}" ] && ARGS="${ARGS} -t zram:true"
 [ "${crypt_root}" ] && ARGS="${ARGS} -t crypt_root:true"
 
-ARGS="${ARGS} -t architecture:${arch} -t family:${family} -t device:${device} \
-            -t partitiontable:${partitiontable} -t filesystem:${filesystem} \
-            -t image:${image_file} -t rootfs:${rootfs_file} -t installfs:${installfs_file} \
-            -t debian_suite:${debian_suite} -t suite:${suite} \
+ARGS="${ARGS} \
+            -t architecture:${arch} \
+            -t family:${family} \
+            -t device:${device} \
+            -t partitiontable:${partitiontable} \
+            -t filesystem:${filesystem} \
+            -t image:${image_file} \
+            -t rootfs:${rootfs_file} \
+            -t installfs:${installfs_file} \
+            -t debian_suite:${debian_suite} \
+            -t suite:${suite} \
             --scratchsize=8G"
 
 if [ ! "${image_only}" ] || [ ! -f "${rootfs_file}" ]; then
-  # Ensure subsequent artifacts are rebuilt too
-  rm -f "rootfs-${device}-${environment}.tar.gz"
+  ## Ensure subsequent artifacts are rebuilt too
+  rm -vf "rootfs-${device}-${environment}.tar.gz"
   ${DEBOS_CMD} ${ARGS} rootfs.yaml || exit 1
 fi
 
@@ -167,17 +183,19 @@ if [ "$installer" ]; then
   if [ ! "${image_only}" ] || [ ! -f "${installfs_file}" ]; then
     ${DEBOS_CMD} ${ARGS} installfs.yaml || exit 1
   fi
+
   if [ ! "${image_only}" ] || [ ! -f "rootfs-${device}-${environment}.tar.gz" ]; then
     ${DEBOS_CMD} ${ARGS} "rootfs-device.yaml" || exit 1
   fi
-  # Convert rootfs tarball to squashfs for inclusion in the installer image
+
+  ## Convert rootfs tarball to squashfs for inclusion in the installer image
   zcat "rootfs-${device}-${environment}.tar.gz" | tar2sqfs "rootfs-${device}-${environment}.sqfs" > /dev/null 2>&1
 fi
 
 ${DEBOS_CMD} ${ARGS} "$image.yaml"
 
 if [ "$installer" ]; then
-  rm -f "rootfs-${device}-${environment}.sqfs"
+  rm -vf "rootfs-${device}-${environment}.sqfs"
 fi
 
 if [ ! "$no_blockmap" ] && [ -f "$image_file.img" ]; then
@@ -186,24 +204,27 @@ fi
 
 if [ "$do_compress" ]; then
   echo "Compressing ${image_file}..."
-  [ -f "${image_file}.img" ] && xz --compress --keep --force "${image_file}.img"
-  [ -f "${image_file}.rootfs.img" ] && tar cJf "${image_file}.tar.xz" "${image_file}".*.img
+  [ -f "${image_file}.img" ] \
+    && xz --compress --keep --force "${image_file}.img"
+  [ -f "${image_file}.rootfs.img" ] \
+    && tar cJf "${image_file}.tar.xz" "${image_file}".*.img
 fi
 
 if [ -n "$sign" ]; then
-    truncate -s0 "${image_file}.sha256sums"
-    if [ "$do_compress" ]; then
-        extensions="img.xz tar.xz img.bmap"
-    else
-        extensions="*.img"
-    fi
+  truncate -s0 "${image_file}.sha256sums"
+  if [ "$do_compress" ]; then
+    extensions="img.xz tar.xz img.bmap"
+  else
+    extensions="*.img"
+  fi
 
-    for ext in ${extensions}; do
-        for file in "${image_file}".${ext}; do
-            sha256sum "${file}" >> "${image_file}.sha256sums"
-        done
+  for ext in ${extensions}; do
+    for file in "${image_file}".${ext}; do
+      sha256sum "${file}" >> "${image_file}.sha256sums"
     done
+  done
 
-    [ -f "${image_file}.sha256sums".asc ] && rm "${image_file}.sha256sums.asc"
-    gpg -u "${sign}" --clearsign "${image_file}.sha256sums"
+  [ -f "${image_file}.sha256sums".asc ] \
+    && rm -v "${image_file}.sha256sums.asc"
+  gpg -u "${sign}" --clearsign "${image_file}.sha256sums"
 fi

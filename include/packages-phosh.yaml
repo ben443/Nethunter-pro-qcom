@@ -31,8 +31,10 @@ actions:
       - phosh-mobile-settings
       - phosh-plugins
       - phosh-tour
+      - phosh-wallpapers
       - portfolio-filemanager
       - powersupply-gtk
+      - sound-theme-phosh
       - webext-ublock-origin-firefox
       - chatty
 

@@ -18,3 +18,11 @@ actions:
       - qmlkonsole
       - tokodon
       - webext-ublock-origin-firefox
+
+# HACK: workaround to fix https://salsa.debian.org/Mobian-team/mobian-recipes/-/issues/36
+# seems like plasma-mobile.service gets enabled even if dh_installsystemd should forbid that
+# and, this seems to happen only on amd64 images, not on other images for arm64...
+  - action: run
+    description: Disable plasma-mobile.service to avoid conflicts with phog
+    chroot: true
+    command: systemctl mask plasma-mobile.service
