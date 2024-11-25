@@ -8,7 +8,7 @@ PASSWORD=$2
 adduser --gecos "${USERNAME}" --disabled-password --shell /bin/bash "${USERNAME}"
 adduser "${USERNAME}" sudo
 
-# Needed for hardware access rights
+## Needed for hardware access rights
 adduser "${USERNAME}" bluetooth
 adduser "${USERNAME}" plugdev
 

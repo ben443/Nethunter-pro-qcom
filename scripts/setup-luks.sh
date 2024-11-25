@@ -45,7 +45,7 @@ elif [ "${FILESYSTEM}" = 'btrfs' ]; then
   btrfs filesystem resize max /dev/mapper/root
 fi
 
-# remount partitions
+## remount partitions
 mount -v /dev/mapper/root $ROOTDIR
 if [ "${BOOTONROOT}" != "true" ]; then
   mount -v ${TARGET_DISK}${PART}1 $ROOTDIR/boot

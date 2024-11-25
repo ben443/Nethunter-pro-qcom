@@ -2,8 +2,7 @@
 
 set -e
 
-# We must mount a devtmpfs to find which device support the LUKS
-# rootfs
+# We must mount a devtmpfs to find which device support the LUKS rootfs
 trap 'umount /dev' EXIT
 mount -v -t devtmpfs none /dev
 
