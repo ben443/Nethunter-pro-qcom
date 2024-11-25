@@ -16,10 +16,10 @@ else
 fi
 
 if [ "${BOOTONROOT}" != "true" ]; then
-    umount -lf $ROOTDIR/boot $ROOTDIR
+  umount -lfv $ROOTDIR/boot $ROOTDIR
 else
-    umount -lf $ROOTDIR
-    PARTNR=1
+  umount -lfv $ROOTDIR
+  PARTNR=1
 fi
 
 if echo ${TARGET_DISK} | grep -q p1; then
@@ -50,9 +50,9 @@ then
 fi
 
 # remount partitions
-mount /dev/mapper/root $ROOTDIR
+mount -v /dev/mapper/root $ROOTDIR
 if [ "${BOOTONROOT}" != "true" ]; then
-    mount ${TARGET_DISK}${PART}1 $ROOTDIR/boot
+  mount -v ${TARGET_DISK}${PART}1 $ROOTDIR/boot
 fi
 
 # get root partition UUID

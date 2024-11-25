@@ -4,7 +4,7 @@ USERNAME=$1
 [ "$USERNAME" ] || exit 1
 
 # Disable power key handling to avoid accidental shutdown mid-install
-mkdir -p /etc/systemd/logind.conf.d
+mkdir -pv /etc/systemd/logind.conf.d/
 cat > /etc/systemd/logind.conf.d/10-ignore-power-key.conf << EOF
 [Login]
 HandlePowerKey=ignore
