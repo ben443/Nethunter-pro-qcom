@@ -7,10 +7,10 @@ echo "$1" > /etc/hostname
 plymouth-set-default-theme kali
 
 # Enable phog greeter if package is installed
-if [ -f "`which phog`" ]; then
-    systemctl enable greetd
-elif [ -f "`which phosh-session`" ]; then
-    systemctl enable phosh
+if [ -f "$( which phog )" ]; then
+  systemctl enable greetd
+elif [ -f "$( which phosh-session)" ]; then
+  systemctl enable phosh
 fi
 
 # Enable essential services

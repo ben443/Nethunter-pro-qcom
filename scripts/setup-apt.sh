@@ -11,7 +11,7 @@ COMPONENTS="main"
 
 # Add source repo
 if [ "$DEBIAN_SUITE" = "kali-rolling" ]; then
-    echo "#deb-src http://http.kali.org/kali kali-rolling $COMPONENTS" >> /etc/apt/sources.list
+  echo "#deb-src http://http.kali.org/kali kali-rolling $COMPONENTS" >> /etc/apt/sources.list
 fi
 
 # Set the proper suite in our sources.list
