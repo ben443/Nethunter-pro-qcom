@@ -37,6 +37,8 @@ actions:
       - sound-theme-phosh
       - webext-ublock-origin-firefox
       - chatty
+      - nethunter
+      - hijacker
 
   - action: run
     description: Disable getty in the Phosh environment
