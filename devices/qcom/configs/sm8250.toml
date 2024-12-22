@@ -1,11 +1,15 @@
 # Samsung S20FE R8Q SM8250 configuration
 
 [bootimg]
-pagesize = 0x1000
+base = 0x0
 bootsize = 0x1f37000
-kerneladdr = 0x10008000
-ramdiskaddr = 0x12000000
-secondaddr = 0x0
-tagsaddr = 0x11e00000
-name = "r8q"
-cmdline = "rootimg=/data/rootfs.img mobile.qcomsoc=qcom/sm8250 mobile.vendor=qcom mobile.model=r8q init=/sbin/init ro quiet splash"
+kernel = 0x10008000
+ramdisk = 0x12000000
+second = 0x0
+tags = 0x11e00000
+pagesize = 4096
+
+[[device]]
+vendor = "samsung"
+model = "sm8250"
+append = "rootimg=/data/rootfs.img mobile.qcomsoc=qcom/sm8250 mobile.vendor=qcom mobile.model=r8q init=/sbin/init ro quiet splash"
