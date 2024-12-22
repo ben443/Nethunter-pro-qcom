@@ -1,17 +1,17 @@
 #!/usr/bin/env sh
 
 DEBOS_CMD=debos
-device="pinephone"
+device="sm8250"
 image="image"
 partitiontable="gpt"
-filesystem="ext4"
+filesystem="f2fs"
 environment="phosh"
 crypt_root=
 crypt_password=
 hostname="kali"
 arch="arm64"
 do_compress=
-family=
+family="qcom"
 image_only=
 installer=
 zram=
