@@ -1,15 +1,18 @@
-# Samsung S20FE R8Q SM8250 configuration
+chipset = "sm8250"
 
 [bootimg]
-base = 0x0
-bootsize = 0x1f37000
-kernel = 0x10008000
-ramdisk = 0x12000000
+version = 2
+base = 0x80000000
+kernel = 0x8000
+ramdisk = 0x1000000
 second = 0x0
-tags = 0x11e00000
+tags = 0x100
 pagesize = 4096
+dtb = 0x20000000
 
 [[device]]
 vendor = "samsung"
-model = "sm8250"
-append = "rootimg=/data/rootfs.img mobile.qcomsoc=qcom/sm8250 mobile.vendor=qcom mobile.model=r8q init=/sbin/init ro quiet splash"
+model = "galaxy_s20_fe"
+variant = "r8q"
+append = "rootimg=/data/rootfs.img mobile.qcomsoc=qcom/sm8250 mobile.vendor=samsung mobile.model=r8q init=/sbin/init ro quiet splash console=ttyS0,115200n8"
+bootimg = { version = 2, base = 0x80000000, kernel = 0x8000, ramdisk = 0x1000000, second = 0x0, tags = 0x100, pagesize = 4096, dtb = 0x20000000 }
