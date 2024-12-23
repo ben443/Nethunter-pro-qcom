@@ -1,0 +1,34 @@
+name: Build sm8250 Device
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-sm8250:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Kali Linux
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gnupg
+        echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" | sudo tee /etc/apt/sources.list.d/kali.list
+        wget -q -O - https://archive.kali.org/archive-key.asc | sudo apt-key add -
+        sudo apt-get update
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get install -y git debos bmap-tools xz-utils android-sdk-libsparse-utils yq
+
+    - name: Run build script for sm8250
+      run: |
+        chmod +x ./build.sh
+        ./build.sh -t sm8250
