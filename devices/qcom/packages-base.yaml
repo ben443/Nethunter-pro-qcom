@@ -1,5 +1,5 @@
 {{- $architecture := or .architecture "arm64" -}}
-{{- $device := or .device "sdm845" }}
+{{- $device := or .device "sm8250" }}
 
 architecture: {{ $architecture }}
 
@@ -23,11 +23,23 @@ actions:
       - openssh-server
       - qrtr-ns
       - rmtfs
-      - pd-mapper 
+      - pd-mapper 
       - tqftpserv
       - droid-juicer
       - qcom-modem-setup
-
+      # SM8250 (S20 FE) Specific Firmware
+      - firmware-qcom-media
+      - firmware-qcom-compute
+      - linux-firmware-qcom
+      - firmware-samsung-r8q
+      - firmware-misc-nonfree
+      - qcom-firmware-mount
+      - firmware-qcom-adreno
+      - firmware-samsung-sm8250
+      # Wireless/Bluetooth components
+      - firmware-atheros
+      - firmware-brcm80211
+      - bluez-firmware
 
   - action: overlay
     description: Copy additional packages to image
@@ -43,7 +55,6 @@ actions:
     description: Add droid-juicer configuration to image
     source: droid-juicer
     destination: /usr/share/droid-juicer/configs
-{{- end }}
 
   - action: run
     description: Enable essential qcom services
