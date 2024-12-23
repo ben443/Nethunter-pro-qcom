@@ -19,11 +19,15 @@ actions:
     description: Install device-specific base packages
     packages:
       - yq
-{{- if ne $device "wip" }}
-      - {{ $device }}-support
-{{- else }}
       - qcom-support-common
       - openssh-server
+      - qrtr-ns
+      - rmtfs
+      - pd-mapper 
+      - tqftpserv
+      - droid-juicer
+      - qcom-modem-setup
+
 
   - action: overlay
     description: Copy additional packages to image
