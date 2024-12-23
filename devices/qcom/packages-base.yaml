@@ -27,20 +27,14 @@ actions:
       - tqftpserv
       - droid-juicer
       - qcom-modem-setup
-      # SM8250 (S20 FE) Specific Firmware
-      - firmware-qcom-media
-      - firmware-qcom-compute
-      - linux-firmware-qcom
-      - firmware-samsung-r8q
+      # Available firmware packages
       - firmware-misc-nonfree
-      - qcom-firmware-mount
-      - firmware-qcom-adreno
-      - firmware-samsung-sm8250
-      # Wireless/Bluetooth components
       - firmware-atheros
       - firmware-brcm80211
       - bluez-firmware
-
+      # Alternative for Qualcomm firmware
+      - linux-firmware
+  
   - action: overlay
     description: Copy additional packages to image
     source: packages
