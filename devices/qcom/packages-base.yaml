@@ -18,6 +18,7 @@ actions:
     recommends: false
     description: Install device-specific base packages
     packages:
+      # Base packages
       - yq
       - qcom-support-common
       - openssh-server
@@ -27,13 +28,32 @@ actions:
       - tqftpserv
       - droid-juicer
       - qcom-modem-setup
-      # Available firmware packages
+      # Firmware packages
       - firmware-misc-nonfree
       - firmware-atheros
       - firmware-brcm80211
       - bluez-firmware
-      # Alternative for Qualcomm firmware
       - linux-firmware
+      # Additional required packages for S20 FE (R8Q)
+      - gcc-arm-none-eabi
+      - device-tree-compiler
+      - abootimg
+      - android-sdk-libsparse-utils
+      - android-tools-adb
+      - android-tools-fastboot
+      - qemu-user-static
+      # Network support
+      - rfkill
+      - wireless-tools
+      - wpasupplicant
+      - iw
+      - bluetooth
+      # System utilities
+      - udev
+      - kmod
+      - wget
+      - pciutils
+      - usbutils
   
   - action: overlay
     description: Copy additional packages to image
@@ -51,6 +71,29 @@ actions:
     destination: /usr/share/droid-juicer/configs
 
   - action: run
-    description: Enable essential qcom services
+    description: Create device-specific directories
     chroot: true
-    command: systemctl enable qrtr-ns.service rmtfs.service pd-mapper.service tqftpserv.service droid-juicer.service qcom-modem-setup.service
+    command: |
+      mkdir -p /usr/share/droid-juicer/configs/r8q/{firmware,overlay}
+      chmod 755 /usr/share/droid-juicer/configs/r8q
+      chown -R root:root /usr/share/droid-juicer/configs/r8q
+
+  - action: run
+    description: Enable essential services
+    chroot: true
+    command: |
+      systemctl enable qrtr-ns.service
+      systemctl enable rmtfs.service
+      systemctl enable pd-mapper.service
+      systemctl enable tqftpserv.service
+      systemctl enable droid-juicer.service
+      systemctl enable qcom-modem-setup.service
+      systemctl enable bluetooth.service
+      systemctl enable wpa_supplicant.service
+
+  - action: run
+    description: Configure udev rules for SM8250
+    chroot: true
+    command: |
+      echo 'SUBSYSTEM=="qrtr", GROUP="system", MODE="0660"' > /etc/udev/rules.d/90-qrtr.rules
+      echo 'SUBSYSTEM=="rmtfs", GROUP="system", MODE="0660"' > /etc/udev/rules.d/90-rmtfs.rules
