@@ -12,7 +12,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set up Shell environment
-      run: sudo apt-get update
+      run: sudo apt install debos tomlq debootstrap mkbootimg abootimg
 
     - name: Build
       run: sudo ./build.sh -t sm8250 -s -r
