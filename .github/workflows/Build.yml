@@ -33,3 +33,9 @@ jobs:
       run: |
         chmod +x ./build.sh
         sudo ./build.sh -t sm8250
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: sm8250-build
+        path: ./output/*
