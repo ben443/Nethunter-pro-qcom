@@ -31,4 +31,4 @@ jobs:
     - name: Run build script for sm8250
       run: |
         chmod +x ./build.sh
-        ./build.sh -t sm8250
+        sudo ./build.sh -t sm8250
