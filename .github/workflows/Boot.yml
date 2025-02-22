@@ -1,0 +1,30 @@
+name: Build Bootloader
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up jq
+      run: sudo apt-get install -y jq
+
+    - name: Set up tomlq
+      run: sudo apt-get install -y python3-pip && pip3 install tomlq
+
+    - name: Set up mkbootimg
+      run: |
+        wget https://github.com/osm0sis/mkbootimg/archive/refs/tags/v1.7.zip
+        unzip v1.7.zip
+        cd mkbootimg-1.7
+        make
+        sudo cp mkbootimg /usr/local/bin/
+
+    - name: Build bootloader
+      run: |
+        chmod +x devices/qcom/bootloader.sh
+        ./devices/qcom/bootloader.sh sm8250
