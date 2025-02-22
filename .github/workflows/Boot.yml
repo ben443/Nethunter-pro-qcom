@@ -26,5 +26,5 @@ jobs:
 
     - name: Build bootloader
       run: |
-        chmod +x devices/qcom/bootloader.sh
-        ./devices/qcom/bootloader.sh sm8250
+        sudo chmod +x devices/qcom/bootloader.sh
+        sudo ./devices/qcom/bootloader.sh sm8250
