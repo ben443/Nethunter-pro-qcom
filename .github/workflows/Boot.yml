@@ -33,7 +33,7 @@ jobs:
       run: sudo cp bootimg-galaxy_s20_fe-r8q /path/to/output/directory
 
     - name: Upload boot image artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: boot-image
         path: /path/to/output/directory/bootimg-galaxy_s20_fe-r8q
