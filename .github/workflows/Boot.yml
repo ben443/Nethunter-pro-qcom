@@ -13,14 +13,14 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up jq and mkbootimg
-      run: sudo apt-get install -y jq mkbootimg
+    - name: Set up jq
+      run: sudo apt-get install -y jq
 
     - name: Set up tomlq
       run: sudo apt-get install -y python3-pip && pip3 install tomlq
 
-    - name: Install gki module
-      run: sudo pip3 install gki
+    - name: Use mkbootimg from repository
+      run: sudo cp mkbootimg /usr/local/bin/
 
     - name: Build bootloader
       run: |
