@@ -19,6 +19,9 @@ jobs:
     - name: Set up tomlq
       run: sudo apt-get install -y python3-pip && pip3 install tomlq
 
+    - name: Install gki module
+      run: sudo pip3 install gki
+
     - name: Build bootloader
       run: |
         chmod +x devices/qcom/bootloader.sh
