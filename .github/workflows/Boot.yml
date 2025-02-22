@@ -28,3 +28,9 @@ jobs:
       run: |
         sudo chmod +x devices/qcom/bootloader.sh
         sudo ./devices/qcom/bootloader.sh sm8250
+
+    - name: Upload boot image artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: boot-image
+        path: bootimg-galaxy_s20_fe-r8q
