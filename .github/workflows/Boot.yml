@@ -30,7 +30,7 @@ jobs:
         sudo ./devices/qcom/bootloader.sh sm8250
 
     - name: Upload boot image artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: boot-image
         path: bootimg-galaxy_s20_fe-r8q
