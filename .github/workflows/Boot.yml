@@ -29,8 +29,11 @@ jobs:
         sudo chmod +x devices/qcom/bootloader.sh
         sudo ./devices/qcom/bootloader.sh sm8250
 
+    - name: Copy boot image to output directory
+      run: sudo cp bootimg-galaxy_s20_fe-r8q /path/to/output/directory
+
     - name: Upload boot image artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v2
       with:
         name: boot-image
-        path: bootimg-galaxy_s20_fe-r8q
+        path: output/bootimg-galaxy_s20_fe-r8q
