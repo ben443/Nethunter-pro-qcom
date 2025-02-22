@@ -34,6 +34,11 @@ jobs:
         chmod +x ./build.sh
         sudo ./build.sh -t sm8250
 
+    - name: Copy image and archive files to output
+      run: |
+        mkdir -p ./output
+        cp *.img *.tar.xz *.tar.gz ./output/ || true
+
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
