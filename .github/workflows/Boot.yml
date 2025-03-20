@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Set up jq
       run: sudo apt-get install -y jq
@@ -30,7 +30,7 @@ jobs:
         sudo ./devices/qcom/bootloader.sh sm8250
 
     - name: Copy boot image to output directory
-      run: sudo cp bootimg-galaxy_s20_fe-r8q /path/to/output/directory
+      run: sudo cp bootimg-galaxy_s20_fe-r8q /out
 
     - name: Upload boot image artifact
       uses: actions/upload-artifact@v4
